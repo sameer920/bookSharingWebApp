@@ -1,6 +1,32 @@
+.userAvatar{
+    text-align: left;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+    font-size: 3vmin;
+    /* width: 30vmin; */ 
+    height: 15vmin;
+    align-items: start;
+    justify-items: start;
+    column-gap: 2vmin;
+    
+}
 .userProfilePic{
     border-radius: 100%;
-    width: 15vmin;
-    height: 15vmin;
+    width: 10vmin;
+    height: 10vmin;
     object-fit: cover;
+    padding-right: 0px;
+    align-self: center;
+    grid-row: 1 / span 2;
+    grid-column: 1 / span 1;
+    justify-self: end;
 }
+
+
+.name{
+    align-self: end;
+}
+/* 
+.rank{
+} */
