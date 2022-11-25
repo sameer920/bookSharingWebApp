@@ -24,8 +24,8 @@ function App() {
         </a>
       </header> */}
       {/* <Login/> */}
-      <BookCover src="bricks.jpg" alt = "test cover"/>
-      {/* <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/> */}
+      {/* <BookCover src="bricks.jpg" alt = "test cover" className="bookCover small"/> */}
+      <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/>
       {/* <Register/> */}
     </div>
   );

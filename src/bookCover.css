@@ -1,6 +1,13 @@
 .bookCover{
     border-radius: 1.5vmin;
     /* size: 10vmin; */
-    width: 20vmin;
     margin: 2vmin;
+}
+
+.large{
+    width: 22vmin;
+}
+
+.small{
+    width: 12vmin
 }
