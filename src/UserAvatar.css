@@ -1,0 +1,6 @@
+.userProfilePic{
+    border-radius: 100%;
+    width: 15vmin;
+    height: 15vmin;
+    object-fit: cover;
+}
