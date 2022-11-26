@@ -3,6 +3,9 @@ import './App.css';
 
 import Login from './Login';
 import Register from './Register';
+import UserAvatar from './UserAvatar';
+import "./UserAvatar.css"
+import BookCover from './BookCover';
 function App() {
   return (
     <div className="App">
@@ -20,7 +23,9 @@ function App() {
           Learn React
         </a>
       </header> */}
-      <Login/>
+      {/* <Login/> */}
+      {/* <BookCover src="bricks.jpg" alt = "test cover" className="bookCover small"/> */}
+      <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/>
       {/* <Register/> */}
     </div>
   );
