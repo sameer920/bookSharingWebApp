@@ -1,0 +1,9 @@
+.Review{
+    text-align: left;
+    /* padding: 2vmax; */
+}
+
+.reviewImage{
+    width: 16vmax;
+    height: 8vmax;
+}

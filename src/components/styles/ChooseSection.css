@@ -1,0 +1,39 @@
+.Selected{
+    color: #F96900;
+}
+
+
+
+.ChooseSection{
+    column-gap: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    place-content: center;
+}
+.ChooseSection h3{
+    margin-bottom: 0px;
+    padding-bottom: 3.5%;
+}
+
+.ChooseSection hr{
+    grid-column: 1 /span 2;
+    width: 90%;
+    margin: 0 auto;
+    border: 0px;
+    border-bottom: 2px solid grey;
+
+}
+
+.left{
+    grid-column: 1 / span 1 !important;
+}
+
+.right{
+    grid-column: 2 / span 1 !important;
+}
+
+.SelectedUnderline{
+    margin-top: -2px !important;
+    border-color: #F96900 !important;
+    width: 50% !important;
+}
