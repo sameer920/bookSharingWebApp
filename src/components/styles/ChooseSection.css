@@ -21,6 +21,7 @@
     margin: 0 auto;
     border: 0px;
     border-bottom: 2px solid grey;
+    grid-row-start: 2;
 
 }
 
@@ -36,4 +37,8 @@
     margin-top: -2px !important;
     border-color: #F96900 !important;
     width: 50% !important;
+}
+
+div{
+    margin-bottom: -2px;
 }

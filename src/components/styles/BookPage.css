@@ -1,13 +1,21 @@
 .bookPage{
     font-size:1.75vmax;
+    position: absolute;
+    z-index: 10;
+    width: 100vw;
 
 }
+.bookPage > h3{
+    text-align: left;
+    margin-left: 12vw;
+}
 .content {
-    width: 61.5vmax;
+    width: 85vw;
     height: 42vmax;
     /* padding: 3%; */
-    margin-left: 5vmax;
-    margin-right: 5vmax;
+    margin: 0;
+    margin-left: 7vw;
+    margin-right: 3vw;
     overflow-x: hidden;
     overflow-y: auto;
     text-align: left;
@@ -22,9 +30,12 @@
 .bookInfo{
     display:grid;
     grid-template-columns: 20vmax 1fr;
-    margin-left: 2vmax;
+    margin-left: 8.5vw;
+    width: 91vw;
 
 }
+
+
 
 .mainUserImage{
     justify-self: start;
@@ -32,3 +43,18 @@
     margin-top: 3%;
     /* align-self: start; */
 }
+
+.whiteBackground{
+    background-color: white;
+    height: 84vmax;
+    position: absolute;
+    z-index: 0;
+    top: 16vmax;
+    width: 100vw;
+}
+
+.ChooseSection{
+    width: 98vw;
+    margin: 0;
+}
+
