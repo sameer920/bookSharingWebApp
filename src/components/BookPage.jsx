@@ -4,7 +4,7 @@ import ChooseSection from "./ChooseSection";
 import Reviews from "./Reviews.jsx";
 import "./styles/BookPage.css"
 import UserAvatar from "./UserAvatar";
-
+import Rating from '@mui/material/Rating';
 
 function BookPage(props) {
     let [Selected, setSelected] = useState("about");
@@ -26,6 +26,7 @@ function BookPage(props) {
             <div className="bookInfo">
                 <BookCover src={props.book.src} alt={props.book.alt} className="large" />
                 <UserAvatar src={props.user.src} userName={props.user.name} subheading={props.user.title} className="mainUserImage" />
+                <Rating value={props.book.rating} readOnly/>
             </div>
             <ChooseSection selected={Selected} SelectAbout={SelectAbout} SelectDetails={SelectDetails}/>
             <div className="content">
@@ -37,7 +38,7 @@ function BookPage(props) {
                         <p><b>Condition: </b>{props.details.condition}</p>
                         <p><b>Additional Details: </b>{props.details.additonalDetails}</p>
                         <h3>Reviews: </h3>
-                        {props.book.reviews.map(review => <Reviews key={review.key} reviewer={review.reviewer} date={review.date} content={review.content} />)}
+                        {props.book.reviews.map(review => <Reviews key={review.key} reviewer={review.reviewer} date={review.date} content={review.content} rating = {review.rating} />)}
                     </div>
                 }
 

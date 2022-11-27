@@ -19,12 +19,14 @@ let reviewArr = [{
   key: 1,
   reviewer: user,
   date: "11/27/2022",
+  rating: 4,
   content: "Maecenas posuere porttitor venenatis."
 },
 {
   key: 2,
   reviewer: user,
   date: "11/27/2022",
+  rating: 3,
   content: "Maecenas posuere porttitor venenatis."
 }
 ]
@@ -34,7 +36,8 @@ let book = {
   name: "test book",
   alt: "test",
   about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  reviews: reviewArr
+  reviews: reviewArr,
+  rating: 4
 }
 
 let details = {

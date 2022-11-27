@@ -58,3 +58,7 @@
     margin: 0;
 }
 
+.MuiRating-sizeMedium{
+    justify-self: center;
+}
+
