@@ -1,5 +1,5 @@
 import React from "react";
-import "./loginAndRegister.css";
+import "./styles/loginAndRegister.css";
 import LoginForm from "./loginForm";
 
 function Login(){
