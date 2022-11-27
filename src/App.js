@@ -1,15 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+// eslint-disable-next-line
+import logo from "./logo.svg";
+import "./App.css";
+// eslint-disable-next-line
+import Login from "./Login";
+// eslint-disable-next-line
+import Register from "./Register";
+// eslint-disable-next-line
+import UserAvatar from "./UserAvatar";
+import "./UserAvatar.css";
+// eslint-disable-next-line
+import BookCover from "./BookCover";
+import Library from "./components/Library";
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+// eslint-disable-next-line
+import Explore from "./components/Explore";
 
-import Login from './Login';
-import Register from './Register';
-import UserAvatar from './UserAvatar';
-import "./UserAvatar.css"
-import BookCover from './BookCover';
 function App() {
+  const [page, setpage] = useState("");
+  const page_func = async (ev) => {
+    let newvalue = ev.target.textContent;
+    setpage(newvalue);
+  };
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
   return (
     <div className="App">
-      {/* <header className="App-header">
+      <Router>
+        <Routes>
+          {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -23,10 +47,15 @@ function App() {
           Learn React
         </a>
       </header> */}
-      {/* <Login/> */}
-      {/* <BookCover src="bricks.jpg" alt = "test cover" className="bookCover small"/> */}
-      <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/>
-      {/* <Register/> */}
+          {/* <Login/> */}
+          {/* <BookCover src="bricks.jpg" alt = "test cover" className="bookCover small"/> */}
+          {/* <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/> */}
+          {/* <Register/> */}
+
+          <Route path="/Library" element={<Library onc={page_func} />}></Route>
+          <Route path="/Explore" element={<Explore />}></Route>
+        </Routes>
+      </Router>
     </div>
   );
 }

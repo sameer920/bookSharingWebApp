@@ -4,12 +4,12 @@
     grid-template-columns: repeat(2,1fr);
     grid-template-rows: repeat(2,1fr);
     font-size: 3vmin;
-    /* width: 30vmin; */ 
+    /* width: 30vmin; */
     height: 15vmin;
     align-items: start;
     justify-items: start;
     column-gap: 2vmin;
-    
+
 }
 .userProfilePic{
     border-radius: 100%;
