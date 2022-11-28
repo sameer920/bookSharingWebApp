@@ -13,6 +13,16 @@ code {
     monospace;
 }
 
+.button-medium{
+  text-align: center;
+  font-size: 2.3vh;
+  padding: 1vh 1vw;
+  /* margin-top: ;
+  margin-bottom: 1.5vmin; */
+  border-radius: 13vh;
+  width: 40vw;
+}
+
 .button-large{
   /*25px*/
   font-size: 5.5vmin;

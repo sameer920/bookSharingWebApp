@@ -41,6 +41,8 @@
     justify-self: start;
     height: 5vmax;
     margin-top: 3%;
+    grid-column: 2 / span 1;
+    grid-row: 1 /span 1;
     /* align-self: start; */
 }
 
@@ -62,3 +64,10 @@
     justify-self: center;
 }
 
+.addBookButton{
+    grid-row: 1 /span 1;
+    grid-column: 2 /span 1;
+    align-self: center;
+    justify-self: start;
+    margin-left: 3.25vw;
+}

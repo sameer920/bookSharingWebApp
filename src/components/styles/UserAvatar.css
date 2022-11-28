@@ -3,14 +3,21 @@
     display: grid;
     grid-template-columns: repeat(2,1fr);
     grid-template-rows: repeat(2,1fr);
-    font-size: 1.9vmax;
-    /* width: 30vmin; */ 
-    height: 10vmax;
+    font-size: 3vmin;
+    /* width: 30vmin; */
+    height: 15vmin;
     align-items: start;
     justify-items: start;
-    column-gap: 1vmax;
-    align-self: start;
-    
+    column-gap: 2vmin;
+
+
+    /* font-sizeq: 1.9vmax; */
+    /* heightq: 10vmax; */
+    /* align-items: start; */
+    /* justify-items: start; */
+    /* column-gap: 1vmax; */
+    /* align-self: start; */
+  
 }
 .userProfilePic{
     border-radius: 50%;
