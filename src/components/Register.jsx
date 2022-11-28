@@ -13,7 +13,7 @@ function Register(){
             <input type="submit" class="button-large button-primary" value="Register" />
         </form>
         <input type="button" value="Sign In" class="button-large button-secondary" />
-        
+
         </div>
     </div>
 }
