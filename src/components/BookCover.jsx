@@ -7,4 +7,5 @@ function BookCover(props) {
     </div>
 }
 
+
 export default BookCover;

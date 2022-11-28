@@ -29,12 +29,13 @@
 .footer {
   border-top: 2px solid black;
   position: fixed;
+  
   left: 0;
   bottom: 0;
   height: 15vmin;
   width: 100%;
   background-color: #e1ece9;
-
+  font-size: 3vmin;
   /* background-color: rgb(73, 65, 65); */
   /* color: white; */
   /* margin:0px 0px; 

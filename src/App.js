@@ -1,15 +1,15 @@
 // eslint-disable-next-line
-import logo from "./logo.svg";
-import "./App.css";
+import logo from "./components/styles/App.css";
+import "./components/styles/App.css";
 // eslint-disable-next-line
-import Login from "./Login";
+// import Login from "./Login";
 // eslint-disable-next-line
-import Register from "./Register";
+// import Register from "./Register";
 // eslint-disable-next-line
-import UserAvatar from "./UserAvatar";
-import "./UserAvatar.css";
+// import UserAvatar from "./UserAvatar";
+// import "./UserAvatar.css";
 // eslint-disable-next-line
-import BookCover from "./BookCover";
+// import BookCover from "./BookCover";
 import Library from "./components/Library";
 import { useEffect, useState } from "react";
 import {
@@ -53,7 +53,7 @@ function App() {
           {/* <Register/> */}
 
           <Route path="/Library" element={<Library onc={page_func} />}></Route>
-          <Route path="/Explore" element={<Explore />}></Route>
+          <Route path="/Explore" element={<Explore onc={page_func}/>}></Route>
         </Routes>
       </Router>
     </div>
