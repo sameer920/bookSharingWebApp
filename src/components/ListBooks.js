@@ -7,13 +7,12 @@ function ListBooks(props) {
     return (
         <>
 
-                
 
      <div  className={props.value?"Flex ":"Flex wrap"}>
      {obje.map((val,val1)=>{
-       return <BookCover src={"bricks.jpg"} className={"small details"}   />
+       return <BookCover src={"./testCover.jpg"} className={"small details"}   />
     })}
-        
+
         {props.value1?<BookCover src={"add.png"} className={"small details"} />: ""}
      </div>
         </>
