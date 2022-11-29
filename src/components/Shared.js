@@ -1,6 +1,6 @@
 import React from "react";
 import ListBooks from "./ListBooks";
-import "./Shared.css"
+import "./styles/Shared.css"
 
 function Shared(props) {
     return (

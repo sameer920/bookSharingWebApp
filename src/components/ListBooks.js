@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import BookCover from "./BookCover";
 import BookDisplay from "./BookDisplay";
 import "./ListBooks.css"
+import "./styles/ListBooks.css"
 
 var obje=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 function click(e){
