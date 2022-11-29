@@ -1,16 +1,19 @@
 import React from "react";
 import "./footer.css";
-import { FaBook } from "react-icons/fa";
-import { MdExplore } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
 import Footer_Comp from "./Footer_Comp";
+import BookIcon from '@mui/icons-material/Book';
+import ExploreIcon from '@mui/icons-material/Explore';
+import PersonIcon from '@mui/icons-material/Person';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 function Footer(props) {
     return (<div className="footer">
         <ul className="ul">
-            <Footer_Comp icon=<FaBook /> onchange={props.onch} text="Library"/>
-            <Footer_Comp icon=<MdExplore /> onchange={props.onch} text="Explore"/>
-            <Footer_Comp icon=<CgProfile />  onchange={props.onch}text="MyProfile"/>
+            {/* <Footer_Comp icon=<FaBook /> onchange={props.onch} text="Library"/> */}
+            <Footer_Comp icon=<BookIcon fontSize="medium"/>onchange={props.onch} text="Library"/>
+            <Footer_Comp icon=<ExploreIcon fontSize="medium"/> onchange={props.onch} text="Explore"/>
+            <Footer_Comp icon=<AccountCircleIcon fontSize ="medium"/>  onchange={props.onch}text="MyProfile"/>
         </ul>
     </div>);
 }
