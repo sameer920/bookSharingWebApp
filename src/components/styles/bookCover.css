@@ -11,3 +11,10 @@
     width: 20vmin;
     height: 27vh;
 }
+
+@media (max-width: 1000px){
+    .small{
+        width: 20vmin;
+        height: 15vh;
+    }
+}
