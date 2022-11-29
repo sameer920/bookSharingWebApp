@@ -1,5 +1,5 @@
 import React from "react";
-import "./footer.css";
+import "./styles/footer.css";
 import Footer_Comp from "./Footer_Comp";
 import BookIcon from '@mui/icons-material/Book';
 import ExploreIcon from '@mui/icons-material/Explore';

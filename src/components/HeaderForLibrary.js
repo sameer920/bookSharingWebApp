@@ -1,5 +1,5 @@
 import React from "react";
-import "./HeaderForLibrary.css"
+import "./styles/HeaderForLibrary.css"
 
 
 function HeaderForLibrary(props) {
