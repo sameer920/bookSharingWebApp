@@ -30,7 +30,7 @@
     /* background-color: black; */
 }
 .footer {
-  border-top: 2px solid black;
+  /* border-top: 2px solid black; */
   position: fixed;
   
   left: 0;
@@ -44,8 +44,4 @@
   /* margin:0px 0px; 
    border:2px solid black;
    padding: 0px 0px; */
-}
-
-.MuiSvgIcon-fontSizeMedium{
-  width: 1vw;
 }

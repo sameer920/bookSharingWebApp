@@ -1,6 +1,7 @@
 .bookCover{
     border-radius: 0.9vmax;
     margin: 2vmin;
+    box-shadow: 0px 5px 5px rgb(167, 166, 166);
 }
 
 .large{

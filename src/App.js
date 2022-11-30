@@ -6,8 +6,7 @@ import "./components/styles/App.css";
 // eslint-disable-next-line
 // import Register from "./Register";
 // eslint-disable-next-line
-// import UserAvatar from "./UserAvatar";
-// import "./UserAvatar.css";
+import UserAvatar from "./components/UserAvatar";
 // eslint-disable-next-line
 // import BookCover from "./BookCover";
 import Library from "./components/Library";
@@ -49,13 +48,16 @@ function App() {
       </header> */}
           {/* <Login/> */}
           {/* <BookCover src="bricks.jpg" alt = "test cover" className="bookCover small"/> */}
-          {/* <UserAvatar src="person.jpg" rank="owner" userName="john" alt="x" className="userProfilePic"/> */}
           {/* <Register/> */}
 
           <Route path="/Library" element={<Library onc={page_func} />}></Route>
-          <Route path="/Explore" element={<Explore onc={page_func}/>}></Route>
+          <Route path="/Explore" element={<Explore onc={page_func} />}></Route>
+          <Route path="/test" element={
+            <UserAvatar src="person.jpg" subheading="owner" userName="john" alt="x" className="userProfilePic" />
+          } />
         </Routes>
       </Router>
+
     </div>
   );
 }
