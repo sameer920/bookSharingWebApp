@@ -8,7 +8,6 @@ import "./components/styles/App.css";
 // eslint-disable-next-line
 import UserAvatar from "./components/UserAvatar";
 // eslint-disable-next-line
-// import BookCover from "./BookCover";
 import Library from "./components/Library";
 import { useEffect, useState } from "react";
 import {
@@ -18,6 +17,15 @@ import {
 } from "react-router-dom";
 // eslint-disable-next-line
 import Explore from "./components/Explore";
+import SearchComponent from "./components/SearchComponent";
+
+let book = {
+  src: "testCover.jpg",
+  name: "test book",
+  alt: "test",
+  title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  rating: 4
+}
 
 function App() {
   const [page, setpage] = useState("");
@@ -51,10 +59,10 @@ function App() {
           {/* <Register/> */}
 
           <Route path="/Library" element={<Library onc={page_func} />}></Route>
-          <Route path="/Explore" element={<Explore onc={page_func} />}></Route>
+          <Route path="/Explore" element={<Explore onc={page_func} value={false} value1={false}/>}></Route>
           <Route path="/test" element={
-            <UserAvatar src="person.jpg" subheading="owner" userName="john" alt="x" className="userProfilePic" />
-          } />
+            <SearchComponent book={book} />
+            } />
         </Routes>
       </Router>
 
