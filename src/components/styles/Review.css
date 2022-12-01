@@ -1,0 +1,17 @@
+.salmon1{
+    /* background-color: aquamarine !important; */
+    color:black;
+    font-size: 10px;
+    position:fixed;
+    /* border:2px solid red; */
+    top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+    backdrop-filter: blur(4px) ;
+    /* position:absolute; top:0px; right:0px; bottom:0px; left:0px; */
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }

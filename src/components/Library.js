@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer.js";
 import Header from "./HeaderForLibrary.js";
-
+import "./styles/library.css"
 import { useState } from "react";
 import Shared from "./Shared.js";
 import SharingRequest from "./SharingRequest.js";
@@ -14,10 +14,13 @@ function Library(props) {
       setS(false);
   }
   return (
-    <div>
+    <div >
       <Header onclick={toggle} select={selected} />
       <div style={{ marginTop: "15vmin" }}></div>
-{selected?<Shared />:<SharingRequest />}
+      <div id="bookbody">
+      {selected?<Shared />:<SharingRequest />}
+      </div>
+
       <div style={{ marginBottom: "15vmin" }}></div>
       <Footer onch={props.onc} />
     </div>
