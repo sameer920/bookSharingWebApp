@@ -1,10 +1,10 @@
 import React from "react";
-import Footer from "./Footer.js";
-import Header from "./HeaderForLibrary.js";
+import Footer from "./Footer.jsx";
+import Header from "./HeaderForLibrary.jsx";
 import "./styles/library.css"
 import { useState } from "react";
-import Shared from "./Shared.js";
-import SharingRequest from "./SharingRequest.js";
+import Shared from "./Shared.jsx";
+import SharingRequest from "./SharingRequest.jsx";
 function Library(props) {
   const [selected,setS]=useState(true);
   function toggle(e){
