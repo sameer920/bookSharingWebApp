@@ -34,8 +34,8 @@
   position: fixed;
   
   left: 0;
-  bottom: 0;
-  height: 15vmin;
+  bottom: 0 !important;
+  height: 15vmin !important;
   width: 100%;
   background-color: #e1ece9;
   font-size: 3vmin;
