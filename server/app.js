@@ -5,11 +5,14 @@ const session = require("express-session");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local");
-const { ElevatorSharp } = require("@mui/icons-material");
+var cors = require("cors");
 
 //setting up express:
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json({extended: true}))
+
+app.use(cors());
 
 app.use(session({
     secret: process.env.SECRET_STRING,
@@ -32,6 +35,9 @@ client.connect((err) => {
         console.log(err);
         return;
     }
+    else{
+        console.log("Connected");
+    }
 });
 
 
@@ -46,20 +52,21 @@ passport.use(new LocalStrategy((email, password, cb) => {
             return cb(err);
         }
         else {
-            if (result.rows.length > 0) {
+            if (result.row > 0) {
                 user = result.rows[0];
                 bcrypt.compare(password, user.password, (req, res) => {
                     if (res) {
-                        //user found in database
+                        //user authenticated
                         cb(null, { id: user.id, email: user.email, name: user.name, password: user.password, contact: user.contact })
                     }
                     else {
-                        //user not found in database
+                        //incorrect password
                         cb(null, false);
                     }
                 })
             }
             else {
+                //user not found in the database
                 cb(null, false);
             }
         }
@@ -85,11 +92,74 @@ passport.deserializeUser((id, cb) =>{
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.listen(4000, () => {console.log("Listening on port 4000")})
+
 //post requests:
 app.post('/login', passport.authenticate("local"), function(req,res){
     
 })
 
+function checkIfUniqueId(userId){
+    client.query(`Select id from users where id=$1`, [userId], (err, res) =>{
+        if (err){
+            console.log(err)
+        }
+        else{
+            if (res.rowCount == 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    })
+}
+
+app.post('/Register', async function(req, res){
+    console.log(req.body)
+    let name = req.body.name;
+    let email = req.body.email;
+    let password = req.body.password;
+    let confirmPassword = req.body.confirmPassword;
+    let contact = req.body.contact;
+
+    //hash password
+    let hashedPassword = await bcrypt.hash(password,10);
+
+    client.query(`SELECT email FROM users where email=$1`, [email], (err, result)=>{
+        if (err){
+            console.log(err);
+        }
+        else if(result.rowCount ==  0){
+            if (password == confirmPassword){
+                let userId = name+Math.floor(Math.random() * 10000).toString();
+                while (checkIfUniqueId(userId) == false){
+                    userId = name+(Math.floor(Math.random() * 10000)).toString();
+                }
+                client.query(`INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
+                [userId, name, email, hashedPassword, contact], (err, result) =>{
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log({result:"true"});
+                        res.json({result:"true"});
+                    }
+                })
+            }
+            else{
+                console.log("password not match")
+                res.json({
+                    result: "passwords dont match"
+                });
+            }
+        }
+        else{
+            console.log("already exist")
+            res.json({result:"User already exists. Please Login"});
+        }
+    })
+})
 
 
 
