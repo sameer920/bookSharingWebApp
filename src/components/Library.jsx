@@ -1,12 +1,10 @@
 import React from "react";
-import Footer from "./Footer.js";
-import Header from "./HeaderForLibrary.js";
-
+import Footer from "./Footer.jsx";
+import Header from "./HeaderForLibrary.jsx";
+import "./styles/library.css"
 import { useState } from "react";
-import Shared from "./Shared.js";
-import SharingRequest from "./SharingRequest.js";
-
-
+import Shared from "./Shared.jsx";
+import SharingRequest from "./SharingRequest.jsx";
 function Library(props) {
   const [selected,setS]=useState(true);
   function toggle(e){
@@ -16,10 +14,13 @@ function Library(props) {
       setS(false);
   }
   return (
-    <div>
+    <div >
       <Header onclick={toggle} select={selected} />
       <div style={{ marginTop: "15vmin" }}></div>
-{selected?<Shared />:<SharingRequest />}
+      <div id="bookbody">
+      {selected?<Shared />:<SharingRequest />}
+      </div>
+
       <div style={{ marginBottom: "15vmin" }}></div>
       <Footer onch={props.onc} />
     </div>
