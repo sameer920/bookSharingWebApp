@@ -11,8 +11,8 @@ function ListBooks(props) {
   const [cond, setcond] = useState(false); //to display condition or not
   const [owner, setowner] = useState(false); //to display owner/user will be shown
   // const [img, setimg] = useState("");
-  const [btn,setbtn]=useState(true);
-  const [rev,setrev]=useState(false);
+  const [btn, setbtn] = useState(true);
+  const [rev, setrev] = useState(false);
   const [obj, setobj] = useState({
     image: "",
     name: "testname",
@@ -26,7 +26,7 @@ function ListBooks(props) {
     btn_name: "remove",
     usertype: "owner",
     usertypename: "amin", //owner user_given
-    text:"",
+    text: "",
   });
   // const [image,setimage] =useState("");
   // const [name,setname]=useState("");
@@ -72,20 +72,20 @@ function ListBooks(props) {
       setcond(true);
       setowner(true);
       set(true);
-setbtn(false);
-setrev(false);
-    //   setobj({ ...obj, datetype: "date taken" });
-    //   setobj({ ...obj, usertype: "user" });
-      setobj({ ...obj, image: e.target.src, usertype: "user" , datetype: "date given"});
+      setbtn(false);
+      setrev(false);
+      //   setobj({ ...obj, datetype: "date taken" });
+      //   setobj({ ...obj, usertype: "user" });
+      setobj({ ...obj, image: e.target.src, usertype: "user", datetype: "date given" });
     }
-    else if(st==="reviews"){
-        setcond(false);
+    else if (st === "reviews") {
+      setcond(false);
       setowner(false);
       setbtn(true);
       setrev(true);
 
-      setobj({ ...obj, image: e.target.src,  datetype: "Review date ",text:"nyy",btn_name:"edit"});
-set(true);
+      setobj({ ...obj, image: e.target.src, datetype: "Review date ", text: "nyy", btn_name: "edit" });
+      set(true);
     }
 
     // console.log(display);
@@ -138,10 +138,5 @@ set(true);
 
     </>
   );
-}
-export default ListBooks;
-
-      </>
-   );
 }
 export default ListBooks;

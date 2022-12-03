@@ -1,12 +1,22 @@
 import React from "react";
-import Footer from "./Footer";
-function Explore(props) {
-    return (
-        <div>
-            hello
-            <Footer />
-        </div>
+import BookCover from "./BookCover";
+import Footer from "./Footer"
+import ListBooks from "./ListBooks";
+import "./styles/ListBooks.css";
+import "./styles/Explore.css";
 
-      );
+
+var obje = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+function Explore(props){
+    return <div className="explore">
+        <input type="text" name="searchBook" placeholder="Search Book" className="searchBar"/>
+        <h2 className="headers">Popular Books:</h2>
+        <ListBooks value={true} value1={false} image="testCover.jpg"/>
+        <h2 className="headers">Recommended for you:</h2>
+        <ListBooks value={false} value1={true} image="testCover.jpg"/>
+        <Footer onch={props.onc} />
+    </div>
 }
+
 export default Explore;
