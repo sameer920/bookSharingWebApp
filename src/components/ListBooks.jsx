@@ -43,61 +43,66 @@ function ListBooks(props) {
       set(false);
    }
    function click(e) {
-      const st = e.target.parentNode.parentNode.id;
-      if (st === "bookssharing") {
-         // setimg(e.target.src);
-         setobj({ ...obj, image: e.target.src });
-         // obj1.image=arr[3];
-         setcond(true);
-         set(true);
-         setrev(false);
-         // setimage(e.target.src);
-         // setname("dummy nme");
-         // setauthor("dummy uthor");
-         // setdetails("no detils");
-         // setcondition(8);
-         // setcover("soft");
-         // setdate("23-2-2020");
-         // setdiv("Dte");
-         // setbtn("remove");
-      } else if (st === "booksreading") {
-         // setimg(e.target.src);
-         setcond(false);
-         setowner(true);
-         set(true);
-         setrev(false);
-         setobj({ ...obj, datetype: "date taken" });
-         setobj({ ...obj, image: e.target.src });
-      } else if (st === "booksgiven") {
-         setcond(true);
-         setowner(true);
-         set(true);
-         setbtn(false);
-         setrev(false);
-         //   setobj({ ...obj, datetype: "date taken" });
-         //   setobj({ ...obj, usertype: "user" });
-         setobj({ ...obj, image: e.target.src, usertype: "user", datetype: "date given" });
+      let pathName = props.pathName;
+
+      if (pathName == "Library") {
+         const parent = e.target.parentNode.parentNode.id;
+         if (parent === "bookssharing") {
+            setobj({ ...obj, image: e.target.src });
+            // obj1.image=arr[3];
+            setcond(true);
+            set(true);
+            setrev(false);
+            // setimage(e.target.src);
+            // setname("dummy nme");
+            // setauthor("dummy uthor");
+            // setdetails("no detils");
+            // setcondition(8);
+            // setcover("soft");
+            // setdate("23-2-2020");
+            // setdiv("Dte");
+            // setbtn("remove");
+         } else if (parent === "booksreading") {
+            // setimg(e.target.src);
+            setcond(false);
+            setowner(true);
+            set(true);
+            setrev(false);
+            setobj({ ...obj, datetype: "date taken" });
+            setobj({ ...obj, image: e.target.src });
+         } else if (parent === "booksgiven") {
+            setcond(true);
+            setowner(true);
+            set(true);
+            setbtn(false);
+            setrev(false);
+            //   setobj({ ...obj, datetype: "date taken" });
+            //   setobj({ ...obj, usertype: "user" });
+            setobj({ ...obj, image: e.target.src, usertype: "user", datetype: "date given" });
+         }
+         else if (parent === "reviews") {
+            setcond(false);
+            setowner(false);
+            setbtn(true);
+            setrev(true);
+
+            setobj({ ...obj, image: e.target.src, datetype: "Review date ", text: "nyy", btn_name: "edit" });
+            set(true);
+         }
+
+         // console.log(display);
+         // console.log(document.getElementById("1").parentElement);
+         // document.getElementById("root").classList.add("salmon");
+         // document.getElementById("bookbody").classList.add("salmon");
+         // document.getElementById("bookbody").classList.add("aa");
+
+         // document.getElementById("ul").classList.add("salmon");
+         // console.log(display);
       }
-      else if (st === "reviews") {
-         setcond(false);
-         setowner(false);
-         setbtn(true);
-         setrev(true);
-
-         setobj({ ...obj, image: e.target.src, datetype: "Review date ", text: "nyy", btn_name: "edit" });
-         set(true);
+      else if(pathName == "Explore"){
+         //route to book page;
       }
-
-      // console.log(display);
-      // console.log(document.getElementById("1").parentElement);
-      // document.getElementById("root").classList.add("salmon");
-      // document.getElementById("bookbody").classList.add("salmon");
-      // document.getElementById("bookbody").classList.add("aa");
-
-      // document.getElementById("ul").classList.add("salmon");
-      // console.log(display);
    }
-
    // const []
 
    return (

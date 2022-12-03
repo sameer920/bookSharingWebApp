@@ -18,6 +18,7 @@ import {
 // eslint-disable-next-line
 import Explore from "./components/Explore";
 import SearchComponent from "./components/SearchComponent";
+import Profile from "./components/Profile";
 
 let book = {
   src: "testCover.jpg",
@@ -26,6 +27,13 @@ let book = {
   title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   rating: 4
 }
+
+let user = {
+  src: "person.jpg",
+  name:"Sameer",
+  email: "sameer@example.com"
+}
+
 
 function App() {
   const [page, setpage] = useState("");
@@ -60,8 +68,10 @@ function App() {
 
           <Route path="/Library" element={<Library onc={page_func} />}></Route>
           <Route path="/Explore" element={<Explore onc={page_func} value={false} value1={false}/>}></Route>
+          <Route path="/MyProfile" element={<Profile onc={page_func} user={user}/>} ></Route>
           <Route path="/test" element={
-            <SearchComponent book={book} />
+            // <SearchComponent book={book} />
+            <Profile />
             } />
         </Routes>
       </Router>
