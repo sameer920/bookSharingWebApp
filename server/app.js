@@ -4,21 +4,15 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
-const LocalStrategy = require("passport-local");
+const LocalStrategy = require("passport-local").Strategy;
 var cors = require("cors");
 
 //setting up express:
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({extended: true}))
+app.use(express.json({ extended: true }))
 
 app.use(cors());
-
-app.use(session({
-    secret: process.env.SECRET_STRING,
-    resave: false,  //resaves a session even if no changes were made
-    saveUninitialized: false //saves a cookie when it is new but unmodified. false is good for gdpr compliance and logins.
-}));
 
 //Setting up database:
 
@@ -35,33 +29,43 @@ client.connect((err) => {
         console.log(err);
         return;
     }
-    else{
+    else {
         console.log("Connected");
     }
 });
 
 
-//setting up passport:
+//setting up passport to handle sessions and authentication:
 
-passport.use(new LocalStrategy((email, password, cb) => {
+app.use(session({
+    secret: process.env.SECRET_STRING,
+    resave: false,  //resaves a session even if no changes were made
+    saveUninitialized: false //saves a cookie when it is new but unmodified. false is good for gdpr compliance and logins.
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, cb) => {
     //searching email in database:
-    client.query(`SELECT email,password from users where email = $1`, [email], (err, result) => {
+    client.query(`SELECT * from users where email = $1`, [email], (err, result) => {
         if (err) {
             //some error occured while authenticating
-            console.log(err);
+            // console.log(err);
+            console.log(err)
             return cb(err);
         }
         else {
-            if (result.row > 0) {
+            if (result.rowCount > 0) {
                 user = result.rows[0];
                 bcrypt.compare(password, user.password, (req, res) => {
                     if (res) {
                         //user authenticated
-                        cb(null, { id: user.id, email: user.email, name: user.name, password: user.password, contact: user.contact })
+                        cb(null, user)
                     }
                     else {
                         //incorrect password
-                        cb(null, false);
+                        cb(null, false, { message: "no user found" });
                     }
                 })
             }
@@ -77,45 +81,70 @@ passport.serializeUser((user, done) => {
     done(null, user.id)
 });
 
-passport.deserializeUser((id, cb) =>{
-    client.query(`SELECT id, username FROM users WHERE id=$1` ,[id], (err, result) =>{
-        if (err){
-            console.log(err);
+passport.deserializeUser((id, cb) => {
+    console.log("I called")
+    client.query(`SELECT * FROM users WHERE id=$1`, [id], (err, result) => {
+        if (err) {
+            console.log(err)
             cb(err);
         }
-        else{
+        else {
             cb(null, result.rows[0]);
         }
-    } )
+    })
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
+function checkAunthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        console.log("heelo")
+        return next();
+    }
+    res.redirect("/Login");
+}
 
-app.listen(4000, () => {console.log("Listening on port 4000")})
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        console.log("yeah")
+        res.redirect("/test");
+    }
+    console.log("nah")
+    next();
+}
+
+app.listen(4000, () => { console.log("Listening on port 4000") })
 
 //post requests:
-app.post('/login', passport.authenticate("local"), function(req,res){
-    
-})
+app.post('/login', checkNotAuthenticated, passport.authenticate("local",
+    {
+        failureRedirect: "/Login",
+        failureMessage: true,
+        // successRedirect: "/MyLibrary"
+    }
+), (req, res) => {
+    client.query("Select * from users where email=$1", [req.body.email], (err, result) => {
+        if (result){
+        res.json({ result: result.rows[0].id })}
+    })
+    }
+)
 
-function checkIfUniqueId(userId){
-    client.query(`Select id from users where id=$1`, [userId], (err, res) =>{
-        if (err){
+function checkIfUniqueId(userId) {
+    client.query(`Select id from users where id=$1`, [userId], (err, res) => {
+        if (err) {
             console.log(err)
         }
-        else{
-            if (res.rowCount == 0){
+        else {
+            if (res.rowCount == 0) {
                 return true;
             }
-            else{
+            else {
                 return false;
             }
         }
     })
 }
 
-app.post('/Register', async function(req, res){
+app.post('/Register', checkNotAuthenticated, async function (req, res) {
     console.log(req.body)
     let name = req.body.name;
     let email = req.body.email;
@@ -124,46 +153,82 @@ app.post('/Register', async function(req, res){
     let contact = req.body.contact;
 
     //hash password
-    let hashedPassword = await bcrypt.hash(password,10);
+    let hashedPassword = await bcrypt.hash(password, 10);
 
-    client.query(`SELECT email FROM users where email=$1`, [email], (err, result)=>{
-        if (err){
+    client.query(`SELECT email FROM users where email=$1`, [email], (err, result) => {
+        if (err) {
             console.log(err);
         }
-        else if(result.rowCount ==  0){
-            if (password == confirmPassword){
-                let userId = name+Math.floor(Math.random() * 10000).toString();
-                while (checkIfUniqueId(userId) == false){
-                    userId = name+(Math.floor(Math.random() * 10000)).toString();
+        else if (result.rowCount == 0) {
+            if (password == confirmPassword) {
+                let userId = name + Math.floor(Math.random() * 10000).toString();
+                while (checkIfUniqueId(userId) === false) {
+                    userId = name + (Math.floor(Math.random() * 10000)).toString();
                 }
                 client.query(`INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
-                [userId, name, email, hashedPassword, contact], (err, result) =>{
-                    if (err){
-                        console.log(err)
-                    }
-                    else{
-                        console.log({result:"true"});
-                        res.json({result:"true"});
-                    }
-                })
+                    [userId, name, email, hashedPassword, contact], (err, result) => {
+                        if (err) {
+                            console.log(err)
+                        }
+                        else {
+                            console.log({ result: "true" });
+                            res.json(JSON.stringify({ result: "true" }));
+                        }
+                    })
             }
-            else{
+            else {
                 console.log("password not match")
                 res.json({
                     result: "passwords dont match"
                 });
             }
         }
-        else{
+        else {
             console.log("already exist")
-            res.json({result:"User already exists. Please Login"});
+            return res.json({ result: "User already exists. Please Login" });
+        }
+    })
+})
+
+app.get("/MyLibrary", checkAunthenticated, (req, res) => {
+    return res.json({ result: "hello world" });
+})
+
+
+app.get("/test", checkAunthenticated, (req, res) => {
+    console.log(req.body)
+    console.log("test")
+    res.json({ result: "you are already authenticated" })
+})
+
+
+
+app.get("/Book/:bookId", function (req, res) {
+    console.log('bookId')
+    let bookId = req.params.bookId;
+    client.query("Select * from books where bid=$1", [bookId], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            return res.json(result.rows)
+        }
+    })
+});
+
+app.get("/Reviews/:bookId", function (req, res) {
+    let bookId = req.params.bookId;
+    client.query("Select * from reviews where bid=$1", [bookId], (err, result) => {
+        if (err) {
+            console.log("Error in retreiving reviews", err);
+        }
+        else {
+            res.json(result.rows);
         }
     })
 })
 
 
-
 client.on('error', (e) => {
     console.log(e);
 })
-

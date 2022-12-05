@@ -3,11 +3,11 @@ import "./styles/loginAndRegister.css";
 
 function Register() {
     const [page, changePage] = useState("Login");
-    function switchPage(){
-        if (page === "Login"){
+    function switchPage() {
+        if (page === "Login") {
             changePage("Register");
         }
-        else{
+        else {
             changePage("Login")
         }
     }
@@ -72,13 +72,18 @@ function Register() {
     }
 
     function sendToBackend(event) {
+        console.log(page)
         event.preventDefault();
-        fetch("http://localhost:4000/"+page, {
+        return fetch("http://localhost:4000/" + page, {
             method: "POST",
-            headers: new Headers({'content-type': 'application/json'}),
+            headers: new Headers({ 'content-type': 'application/json', 'Accept': 'application/json' }),
             mode: "cors",
             body: JSON.stringify(formValue)
         })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch(err => console.log(err))
+
     }
 
     return <div>
