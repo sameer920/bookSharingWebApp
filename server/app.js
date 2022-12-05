@@ -122,10 +122,11 @@ app.post('/login', checkNotAuthenticated, passport.authenticate("local",
     }
 ), (req, res) => {
     client.query("Select * from users where email=$1", [req.body.email], (err, result) => {
-        if (result){
-        res.json({ result: result.rows[0].id })}
+        if (result) {
+            res.json({ result: result.rows[0].id })
+        }
     })
-    }
+}
 )
 
 function checkIfUniqueId(userId) {
@@ -226,7 +227,65 @@ app.get("/Reviews/:bookId", function (req, res) {
             res.json(result.rows);
         }
     })
-})
+});
+
+app.get("/MyProfile/:userId", function (req, res) {
+    let userId = req.params.userId;
+    client.query("SELECT * FROM users WHERE id=$1 ", [userId], (err, result) => {
+        if (err) {
+            console.log("Error while retrieving Profile", err);
+        }
+        else {
+            res.json({
+                "id": result.rows[0].id,
+                "email": result.rows[0].email,
+                "name": result.rows[0].name,
+                "contact": result.rows[0].contact
+            });
+        }
+    })
+});
+
+app.get("/Explore/", function (req, res) {
+    function shuffleArray(array) {
+        if (array.length === 1) {
+            return;
+        }
+        //Fisher-yates Sorting algorithm
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+    client.query("SELECT bid,picture, rating FROM books ORDER BY rating ASC ", (err, result) => {
+        if (err) {
+            console.log("Error while retreiving books for explore page", err);
+        }
+        else {
+            exploreResult = {
+                popularBooks: [],
+                recommendedBooks: []
+            }
+            for (let i = 0; i < 10; i++) {
+                console.log(i)
+                exploreResult.popularBooks.push(result.rows[i]);
+                if (i === result.rowCount - 1) {
+                    break;
+                }
+            }
+            shuffleArray(result.rows);
+            for (let i = 0; i < 20; i++) {
+                exploreResult.recommendedBooks.push(result.rows[i]);
+                if (i === result.rowCount - 1) {
+                    break;
+                }
+            }
+            res.json(exploreResult);
+        }
+    })
+});
 
 
 client.on('error', (e) => {
