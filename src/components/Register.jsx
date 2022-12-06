@@ -78,7 +78,8 @@ function Register() {
             method: "POST",
             headers: new Headers({ 'content-type': 'application/json', 'Accept': 'application/json' }),
             mode: "cors",
-            body: JSON.stringify(formValue)
+            body: JSON.stringify(formValue),
+            credentials:"include"
         })
             .then((response) => response.json())
             .then((data) => console.log(data))
