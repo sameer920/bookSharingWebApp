@@ -72,8 +72,8 @@ function App() {
           <Route path="/MyProfile" element={<Profile onc={page_func} user={user}/>} ></Route>
           <Route path="/Register" element={<Register onc={page_func}/>} />
           <Route path="/test" element={
-            // <SearchComponent book={book} />
-            <Profile />
+            <SearchComponent book={book} className="small" />
+            // <Profile />
             } />
         </Routes>
       </Router>

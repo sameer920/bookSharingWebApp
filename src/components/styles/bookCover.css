@@ -13,6 +13,12 @@
     height: 27vh;
 }
 
+.extraSmall{
+    width: 5.5vmax;
+    height: 8vmax;
+    border-radius: 6px;
+}
+
 @media (max-width: 1000px){
     .small{
         width: 14vmax;
