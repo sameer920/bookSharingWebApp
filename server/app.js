@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./.env" }); // environment variables
+require("dotenv").config({ path: "./server/.env" }); // environment variables
 const { Client } = require("pg");
 const express = require("express");
 const session = require("express-session");
@@ -13,12 +13,9 @@ const { request } = require("http");
 //setting up express:
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-// <<<<<<< latest
-// app.use(express.json({ extended: true }));
-// =======
-app.use(express.json({ extended: true }))
+app.use(express.json({ extended: true }));
 app.use(express.static(__dirname + '/images'));
-// >>>>>>> master
+
 
 app.use(
     cors({
@@ -55,15 +52,12 @@ var upload = multer({ storage: storage }).single("file");
 app.post("/upload", (req, res) => {
     upload(req, res, (err) => {
         if (err) {
-            // <<<<<<< latest
-            //       res.sendStatus(500);
-            // =======
+
             console.log("Error while connecting", err);
             return;
         }
         else {
             console.log("Connected");
-            // >>>>>>> master
         }
         res.send(req.file);
     });
@@ -96,41 +90,33 @@ app.use(passport.session());
 passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, cb) => {
         //searching email in database:
-        client.query(
-            `SELECT * from users where email = $1`,
-            [email],
-            (err, result) => {
-                if (err) {
+        client.query(`SELECT * from users where email = $1`, [email], (err, result) => {
 
-                    //some error occured while authenticating
-                    console.log("Error occured while reading from users for authentication", err)
-                    return cb(err);
+            if (err) {
+                //some error occured while authenticating
+                console.log("Error occured while reading from users for authentication", err)
+                return cb(err);
+            }
+            else {
+                if (result.rowCount > 0) {
+                    user = result.rows[0];
+                    bcrypt.compare(password, user.password, (req, res) => {
+                        if (res) {
+                            //user authenticated
+                            cb(null, user);
+                        } else {
+                            //incorrect password
+                            cb(null, false, { message: "no user found" });
+                        }
+                    });
                 }
                 else {
-                    if (result.rowCount > 0) {
-                        user = result.rows[0];
-                        bcrypt.compare(password, user.password, (req, res) => {
-                            if (res) {
-                                //user authenticated
-                                cb(null, user);
-                            } else {
-                                //incorrect password
-                                cb(null, false, { message: "no user found" });
-                            }
-                        });
-                    }
-                    else {
-                        //user not found in the database
-                        cb(null, false);
-                    }
-
-
-                    return cb(err);
+                    //user not found in the database
+                    cb(null, false);
                 }
             }
-        );
-    })
-);
+        });
+}));
 
 passport.serializeUser((user, done) => {
     console.log("Serialize");
@@ -170,20 +156,12 @@ app.listen(4000, () => {
     console.log("Listening on port 4000");
 });
 
-app.post('/login', passport.authenticate("local",
+app.post('/Login', passport.authenticate("local",
     {
         failureRedirect: "/Register",
         failureMessage: true,
         successRedirect: "/Library"
-    }), (req, res) => {
-        console.log(req.session)
-        client.query("Select * from users where email=$1", [req.body.email], (err, result) => {
-            // >>>>>>> master
-            if (result) {
-                res.json({ result: result.rows[0].id });
-            }
-        });
-    });
+    }));
 
 function checkIfUniqueId(userId) {
 
@@ -250,7 +228,7 @@ app.post('/Register', async function (req, res) {
 });
 
 
-app.get("/Library", checkAunthenticated, (req, res) => {
+app.get("/Library", (req, res) => {
     return res.json({ result: "hello world" });
 })
 
@@ -387,8 +365,7 @@ app.get("/getUserInfo", function (req, res) {
             contact: req["user"].contact,
         });
     } else {
-        console.log("fff");
-        // res.redirect("/Register")
+        res.redirect("/Register")
     }
 });
 
