@@ -8,6 +8,7 @@ const multer = require("multer");
 var path=require('path');
 const LocalStrategy = require("passport-local").Strategy;
 var cors = require("cors");
+const { request } = require("http");
 
 //setting up express:
 const app = express();
@@ -420,6 +421,9 @@ app.post("/AddBooks", async function (req, res) {
                             true,
                           ],
                           (err, ress) => {
+                            client.query("insert into authors(author_name) values($1) returning aid",[req.body.author],(errors,requests)=>{
+                                client.query("insert into books_of_authors(bid,aid) values($1,$2)",[],()=>{});
+                            })
                             if (err) console.log("sharing already", err);
                             else res.send(false);
                           }
