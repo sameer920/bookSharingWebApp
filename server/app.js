@@ -12,7 +12,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }))
 
-app.use(cors({ credentials: true, methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"], origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], origin: "http://localhost:3000" }));
 
 //Setting up database:
 
@@ -288,31 +288,40 @@ app.get("/Explore/", function (req, res) {
     })
 });
 
-app.get("/Library/sharing",function(req,res){
+app.get("/Library/sharing", function (req, res) {
     console.log("shred");
-    const obj={
-        Title:"min",
-        Author : "bckend",
-        user:"no ide",
-        Details :"lorem20",
-        Condition :9,
-        Hardcover :"yes",
-        date_given :"2-2-2002"
+    const obj = {
+        Title: "min",
+        Author: "bckend",
+        user: "no ide",
+        Details: "lorem20",
+        Condition: 9,
+        Hardcover: "yes",
+        date_given: "2-2-2002"
     }
     console.log(obj)
     return res.json(obj);
 })
 
-app.get("/Library/shared",function(req,res){
+app.get("/Library/shared", function (req, res) {
     console.log("shred");
 
 })
-app.get("/Library/reviews",function(req,res){
+app.get("/Library/reviews", function (req, res) {
     console.log("shred");
 })
 
-app.get("/register", checkAunthenticated, function(req,res){
-    res.json({response:"hi"})
+app.get("/register", checkAunthenticated, function (req, res) {
+    res.json({ response: "hi" })
+})
+
+app.get("/getUserInfo", function (req, res) {
+    res.json({
+        id: req["user"].id,
+        name: req["user"].name,
+        email: req["user"].email,
+        contact: req["user"].contact,
+    });
 })
 
 
