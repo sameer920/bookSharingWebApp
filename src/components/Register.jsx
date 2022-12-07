@@ -80,11 +80,12 @@ function Register() {
             headers: new Headers({ 'content-type': 'application/json', 'Accept': 'application/json' }),
             mode: "cors",
             body: JSON.stringify(formValue),
-            credentials:"include"
+            credentials: "include"
         })
             .then((response) => {
+                response.json().then(data => console.log(data))
                 // console.log(response)
-                if (response.redirected === true){
+                if (response.redirected === true) {
                     window.location.href = response.url.substring(response.url.lastIndexOf("/"));
                 }
             })
@@ -98,11 +99,11 @@ function Register() {
         <div className="card">
             <h2>{page} </h2>
             <form method="post" onSubmit={sendToBackend}>
-                {page === "Register" && <input type="text" className="input"  name="name" placeholder="Name" onChange={handleChange} value={formValue.name} />}
+                {page === "Register" && <input type="text" className="input" name="name" placeholder="Name" onChange={handleChange} value={formValue.name} />}
                 <input name="email" className="input" type="email" placeholder="Email" onChange={handleChange} value={formValue.email} />
-                {page === "Register" && <input className="input"  type="text" name="contact" placeholder="Contact" onChange={handleChange} value={formValue.contact} />}
-                <input name="password"className="input"  type="password" placeholder="Password" onChange={handleChange} value={formValue.password} />
-                {page === "Register" && <input className="input"  name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formValue.confirmPassword} />}
+                {page === "Register" && <input className="input" type="text" name="contact" placeholder="Contact" onChange={handleChange} value={formValue.contact} />}
+                <input name="password" className="input" type="password" placeholder="Password" onChange={handleChange} value={formValue.password} />
+                {page === "Register" && <input className="input" name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formValue.confirmPassword} />}
                 <input type="submit" className="input" class="button-large button-primary" value={page} />
             </form>
             <input type="button" value={page === "Login" ? "Register" : "Sign-in"} className="button-large button-secondary" onClick={switchPage} />
