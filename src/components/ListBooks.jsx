@@ -76,6 +76,11 @@ function ListBooks(props) {
         datetype: "date given",
       });
     } else if (st === "reviews") {
+      if (e.target.id === "add") {
+        console.log("yes");
+        window.location.href = "/AddReviews";
+      }
+      else{
       setcond(false);
       setowner(false);
       setbtn(true);
@@ -89,6 +94,7 @@ function ListBooks(props) {
         btn_name: "edit",
       });
       set(true);
+    }
     }
   }
 

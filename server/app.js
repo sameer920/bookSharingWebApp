@@ -442,7 +442,7 @@ app.post("/AddBooks", async function (req, res) {
                                             ],
                                             (err, ress) => {
                                                 client.query("insert into authors(author_name) values($1) returning aid", [req.body.author], (errors, requests) => {
-                                                    client.query("insert into books_of_authors(bid,aid) values($1,$2)", [], () => { });
+                                                    client.query("insert into books_of_authors(bid,aid) values($1,$2)", [results.rows[0].bid,requests.rows[0].id], () => { });
                                                 })
                                                 if (err) console.log("sharing already", err);
                                                 else res.send(false);
