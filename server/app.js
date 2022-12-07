@@ -302,7 +302,7 @@ function checkIfUniqueId(userId) {
     })
 }
 
-app.post('/Register', checkNotAuthenticated, async function (req, res) {
+app.post('/Register',  async function (req, res) {
     console.log(req.body)
     let name = req.body.name;
     let email = req.body.email;
@@ -509,9 +509,15 @@ app.get("/Library/reviews", function (req, res) {
   console.log("shred");
 });
 
-app.get("/register", checkAunthenticated, function (req, res) {
-  res.json({ response: "hi" });
-});
+//<<<<<<< latest
+//app.get("/register", checkAunthenticated, function (req, res) {
+ // res.json({ response: "hi" });
+//});
+//=======
+app.get("/register", function (req, res) {
+    res.json({ response: "hi" })
+})
+//>>>>>>> master
 
 app.get("/getUserInfo", function (req, res) {
   if (req.isAuthenticated()) {
