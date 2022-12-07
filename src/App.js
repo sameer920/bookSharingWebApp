@@ -76,11 +76,12 @@ function App() {
             // <SearchComponent book={book} className="small" />
             // <Profile />
 
-            } />
+            } /> */}
             <Route path="/AddBooks" element={<AddBooks text={"book"}/>} />
             <Route path="/AddReviews" element={<AddBooks text={"review"}/>} />
 
-            } /> */}
+            {/* }  */}
+            {/* /> */}
 
         </Routes>
       </Router>

@@ -49,6 +49,7 @@ function AddBooks(props) {
       {form?<Form condition={book} close={close}/>:<></>}
       <Footer />
     </div>
+    
   );
 }
 
