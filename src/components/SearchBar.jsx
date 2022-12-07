@@ -33,7 +33,7 @@ function SearchBar(props) {
             <input type="text" name="searchBook" placeholder="Search Book" className="searchBar" onChange={handleFormState} value={inputData} />
         </form>
         {items.length >= 3 && <div className="results">
-            {items.map(item => <SearchComponent book={item} className="small"/>)}
+            {items.map(item => <SearchComponent book={item} className="smallSearch"/>)}
         </div>}
     </div>
 }

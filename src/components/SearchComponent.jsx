@@ -7,8 +7,8 @@ function SearchComponent(props) {
     let book = props.book;
     return <div className={"searchComponent "+props.className}>
         <div className="bookDisplay ">
-            <BookCover src={book.src} alt={book.alt} className={props.className === "small" ? "extraSmall" : "small"} />
-            <Rating value={book.rating} size={props.className === "small" ? "small" : "medium"} readOnly />
+            <BookCover src={book.src} alt={book.alt} className={props.className === "smallSearch" ? "extraSmall" : "small"} />
+            <Rating value={book.rating} size={props.className === "smallSearch" ? "small" : "medium"} readOnly />
         </div>
         <div className="bookDetails">
             <p><b>Title:</b> {book.title}</p>
