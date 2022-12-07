@@ -10,14 +10,14 @@ function Profile(props) {
     let [user, setUser] = useState({});
 
     function fetchUser(userId){
-        fetch(path+"MyProfile/"+ userId).then(response => response.json()).then(data=>setUser(data));
+        // fetch(path+"MyProfile/"+ userId).then(response => response.json()).then(data=>setUser(data));
     }
 
 
     return <div onLoad={fetchUser}>
         <UserAvatar className="profile" src={ user.src} userName={"Name: " +user.name} subheading={"Email: "  +user.email} showContact={true} contact = {"Contact: " +user.contact}/>
         <div className="booksUpForSharing">
-        <ListBooks value={false} value1={true} image="testCover.jpg"/>
+        <ListBooks value={false} value1={true} image="http://localhost:4000/testCover.jpg"/>
         </div>
         <div className="button"></div>
         <Footer onch={props.onc} />

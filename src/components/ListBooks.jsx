@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import BookCover from "./BookCover";
 import BookDisplay from "./BookDisplay";
 import "./styles/ListBooks.css";
-import "./styles/ListBooks.css";
 import { Navigate, redirect, Route } from "react-router-dom";
 let path = "http://localhost:4000/";
 

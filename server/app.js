@@ -13,7 +13,12 @@ const { request } = require("http");
 //setting up express:
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ extended: true }));
+// <<<<<<< latest
+// app.use(express.json({ extended: true }));
+// =======
+app.use(express.json({ extended: true }))
+app.use(express.static(__dirname + '/images'));
+// >>>>>>> master
 
 app.use(
   cors({
@@ -50,7 +55,15 @@ var upload = multer({ storage: storage }).single("file");
 app.post("/upload", (req, res) => {
   upload(req, res, (err) => {
     if (err) {
-      res.sendStatus(500);
+// <<<<<<< latest
+//       res.sendStatus(500);
+// =======
+        console.log("Error while connecting",err);
+        return;
+    }
+    else {
+        console.log("Connected");
+// >>>>>>> master
     }
     res.send(req.file);
   });
@@ -88,26 +101,52 @@ passport.use(
       [email],
       (err, result) => {
         if (err) {
-          //some error occured while authenticating
-          // console.log(err);
-          console.log(err);
-          return cb(err);
-        } else {
-          if (result.rowCount > 0) {
-            user = result.rows[0];
-            bcrypt.compare(password, user.password, (req, res) => {
-              if (res) {
-                //user authenticated
-                cb(null, user);
-              } else {
-                //incorrect password
-                cb(null, false, { message: "no user found" });
-              }
-            });
-          } else {
-            //user not found in the database
-            cb(null, false);
-          }
+// <<<<<<< latest
+//           //some error occured while authenticating
+//           // console.log(err);
+//           console.log(err);
+//           return cb(err);
+//         } else {
+//           if (result.rowCount > 0) {
+//             user = result.rows[0];
+//             bcrypt.compare(password, user.password, (req, res) => {
+//               if (res) {
+//                 //user authenticated
+//                 cb(null, user);
+//               } else {
+//                 //incorrect password
+//                 cb(null, false, { message: "no user found" });
+//               }
+//             });
+//           } else {
+//             //user not found in the database
+//             cb(null, false);
+//           }
+// =======
+            //some error occured while authenticating
+            // console.log(err);
+            console.log("Error occured while reading from users for authentication",err)
+            return cb(err);
+        }
+        else {
+            if (result.rowCount > 0) {
+                user = result.rows[0];
+                bcrypt.compare(password, user.password, (req, res) => {
+                    if (res) {
+                        //user authenticated
+                        cb(null, user)
+                    }
+                    else {
+                        //incorrect password
+                        cb(null, false, { message: "no user found" });
+                    }
+                })
+            }
+            else {
+                //user not found in the database
+                cb(null, false);
+            }
+// >>>>>>> master
         }
       }
     );
@@ -120,15 +159,28 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, cb) => {
-  console.log("I called");
-  client.query(`SELECT * FROM users WHERE id=$1`, [id], (err, result) => {
-    if (err) {
-      console.log(err);
-      cb(err);
-    } else {
-      cb(null, result.rows[0]);
-    }
-  });
+// <<<<<<< latest
+//   console.log("I called");
+//   client.query(`SELECT * FROM users WHERE id=$1`, [id], (err, result) => {
+//     if (err) {
+//       console.log(err);
+//       cb(err);
+//     } else {
+//       cb(null, result.rows[0]);
+//     }
+//   });
+// =======
+    console.log("I called")
+    client.query(`SELECT * FROM users WHERE id=$1`, [id], (err, result) => {
+        if (err) {
+            console.log("Error while reading users for deserialize ",err)
+            cb(err);
+        }
+        else {
+            cb(null, result.rows[0]);
+        }
+    })
+// >>>>>>> master
 });
 
 function checkAunthenticated(req, res, next) {
@@ -152,20 +204,32 @@ app.listen(4000, () => {
 });
 
 //post requests:
-app.post(
-  "/login",
-  checkNotAuthenticated,
-  passport.authenticate("local", {
-    failureRedirect: "/Register",
-    failureMessage: true,
-    successRedirect: "/Library",
-  }),
-  (req, res) => {
-    console.log(req.session);
-    client.query(
-      "Select * from users where email=$1",
-      [req.body.email],
-      (err, result) => {
+// <<<<<<< latest
+// app.post(
+//   "/login",
+//   checkNotAuthenticated,
+//   passport.authenticate("local", {
+//     failureRedirect: "/Register",
+//     failureMessage: true,
+//     successRedirect: "/Library",
+//   }),
+//   (req, res) => {
+//     console.log(req.session);
+//     client.query(
+//       "Select * from users where email=$1",
+//       [req.body.email],
+//       (err, result) => {
+// =======
+app.post('/login', passport.authenticate("local",
+    {
+        failureRedirect: "/Register",
+        failureMessage: true,
+        successRedirect: "/Library"
+    }
+), (req, res) => {
+    console.log(req.session)
+    client.query("Select * from users where email=$1", [req.body.email], (err, result) => {
+// >>>>>>> master
         if (result) {
           res.json({ result: result.rows[0].id });
         }
@@ -175,52 +239,107 @@ app.post(
 );
 
 function checkIfUniqueId(userId) {
-  client.query(`Select id from users where id=$1`, [userId], (err, res) => {
-    if (err) {
-      console.log(err);
-    } else {
-      if (res.rowCount == 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  });
+// <<<<<<< latest
+//   client.query(`Select id from users where id=$1`, [userId], (err, res) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       if (res.rowCount == 0) {
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     }
+//   });
+// }
+
+// app.post("/Register", checkNotAuthenticated, async function (req, res) {
+//   console.log(req.body);
+//   let name = req.body.name;
+//   let email = req.body.email;
+//   let password = req.body.password;
+//   let confirmPassword = req.body.confirmPassword;
+//   let contact = req.body.contact;
+
+//   //hash password
+//   let hashedPassword = await bcrypt.hash(password, 10);
+
+//   client.query(
+//     `SELECT email FROM users where email=$1`,
+//     [email],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//       } else if (result.rowCount == 0) {
+//         if (password == confirmPassword) {
+//           let userId = name + Math.floor(Math.random() * 10000).toString();
+//           while (checkIfUniqueId(userId) === false) {
+//             userId = name + Math.floor(Math.random() * 10000).toString();
+//           }
+//           client.query(
+//             `INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
+//             [userId, name, email, hashedPassword, contact],
+//             (err, result) => {
+//               if (err) {
+//                 console.log(err);
+//               } else {
+//                 console.log({ result: "true" });
+//                 res.json(JSON.stringify({ result: "true" }));
+//               }
+// =======
+    client.query(`Select id from users where id=$1`, [userId], (err, res) => {
+        if (err) {
+            console.log("Error while reading in check if unique" ,err)
+        }
+        else {
+            if (res.rowCount == 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    })
 }
 
-app.post("/Register", checkNotAuthenticated, async function (req, res) {
-  console.log(req.body);
-  let name = req.body.name;
-  let email = req.body.email;
-  let password = req.body.password;
-  let confirmPassword = req.body.confirmPassword;
-  let contact = req.body.contact;
+app.post('/Register', checkNotAuthenticated, async function (req, res) {
+    console.log(req.body)
+    let name = req.body.name;
+    let email = req.body.email;
+    let password = req.body.password;
+    let confirmPassword = req.body.confirmPassword;
+    let contact = req.body.contact;
 
-  //hash password
-  let hashedPassword = await bcrypt.hash(password, 10);
+    //hash password
+    let hashedPassword = await bcrypt.hash(password, 10);
 
-  client.query(
-    `SELECT email FROM users where email=$1`,
-    [email],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else if (result.rowCount == 0) {
-        if (password == confirmPassword) {
-          let userId = name + Math.floor(Math.random() * 10000).toString();
-          while (checkIfUniqueId(userId) === false) {
-            userId = name + Math.floor(Math.random() * 10000).toString();
-          }
-          client.query(
-            `INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
-            [userId, name, email, hashedPassword, contact],
-            (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log({ result: "true" });
-                res.json(JSON.stringify({ result: "true" }));
-              }
+    client.query(`SELECT email FROM users where email=$1`, [email], (err, result) => {
+        if (err) {
+            console.log("Error while retrieving emails from database in register",err);
+        }
+        else if (result.rowCount == 0) {
+            if (password == confirmPassword) {
+                let userId = name + Math.floor(Math.random() * 10000).toString();
+                while (checkIfUniqueId(userId) === false) {
+                    userId = name + (Math.floor(Math.random() * 10000)).toString();
+                }
+                client.query(`INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
+                    [userId, name, email, hashedPassword, contact], (err, result) => {
+                        if (err) {
+                            console.log("Error while inserting in database, Register",err)
+                        }
+                        else {
+                            console.log({ result: "true" });
+                            res.json(JSON.stringify({ result: "true" }));
+                        }
+                    })
+            }
+            else {
+                console.log("password not match")
+                res.json({
+                    result: "passwords dont match"
+                });
+// >>>>>>> master
             }
           );
         } else {
@@ -237,9 +356,16 @@ app.post("/Register", checkNotAuthenticated, async function (req, res) {
   );
 });
 
-app.get("/MyLibrary", checkAunthenticated, (req, res) => {
-  return res.json({ result: "hello world" });
-});
+// <<<<<<< latest
+// app.get("/MyLibrary", checkAunthenticated, (req, res) => {
+//   return res.json({ result: "hello world" });
+// });
+// =======
+app.get("/Library", checkAunthenticated, (req, res) => {
+    return res.json({ result: "hello world" });
+})
+
+// >>>>>>> master
 
 app.get("/test", checkAunthenticated, (req, res) => {
   console.log(req.body);
@@ -248,15 +374,28 @@ app.get("/test", checkAunthenticated, (req, res) => {
 });
 
 app.get("/Book/:bookId", function (req, res) {
-  console.log("bookId");
-  let bookId = req.params.bookId;
-  client.query("Select * from books where bid=$1", [bookId], (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      return res.json(result.rows);
-    }
-  });
+// <<<<<<< latest
+//   console.log("bookId");
+//   let bookId = req.params.bookId;
+//   client.query("Select * from books where bid=$1", [bookId], (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       return res.json(result.rows);
+//     }
+//   });
+// =======
+    console.log('bookId')
+    let bookId = req.params.bookId;
+    client.query("Select * from books where bid=$1", [bookId], (err, result) => {
+        if (err) {
+            console.log("Error while retrieving book",err);
+        }
+        else {
+            return res.json(result.rows)
+        }
+    })
+// >>>>>>> master
 });
 
 app.get("/Reviews/:bookId", function (req, res) {
@@ -290,10 +429,25 @@ app.get("/MyProfile/:userId", function (req, res) {
   });
 });
 
-app.get("/Explore/", function (req, res) {
-  function shuffleArray(array) {
-    if (array.length === 1) {
-      return;
+// <<<<<<< latest
+// app.get("/Explore/", function (req, res) {
+//   function shuffleArray(array) {
+//     if (array.length === 1) {
+//       return;
+// =======
+app.get("/Explore", function (req, res) {
+    function shuffleArray(array) {
+        if (array.length === 1) {
+            return;
+        }
+        //Fisher-yates Sorting algorithm
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+// >>>>>>> master
     }
     //Fisher-yates Sorting algorithm
     for (let i = array.length - 1; i > 0; i--) {
