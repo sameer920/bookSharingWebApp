@@ -12,7 +12,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }))
 
-app.use(cors());
+app.use(cors({ credentials: true, methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"], origin: "http://localhost:3000" }));
 
 //Setting up database:
 
@@ -78,6 +78,7 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, cb)
 }));
 
 passport.serializeUser((user, done) => {
+    console.log("Serialize")
     done(null, user.id)
 });
 
@@ -107,7 +108,6 @@ function checkNotAuthenticated(req, res, next) {
         console.log("yeah")
         res.redirect("/test");
     }
-    console.log("nah")
     next();
 }
 
@@ -118,9 +118,10 @@ app.post('/login', checkNotAuthenticated, passport.authenticate("local",
     {
         failureRedirect: "/Login",
         failureMessage: true,
-        // successRedirect: "/MyLibrary"
+        successRedirect: "/MyLibrary"
     }
 ), (req, res) => {
+    console.log(req.session)
     client.query("Select * from users where email=$1", [req.body.email], (err, result) => {
         if (result) {
             res.json({ result: result.rows[0].id })
