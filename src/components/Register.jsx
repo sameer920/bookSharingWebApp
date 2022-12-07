@@ -98,12 +98,12 @@ function Register() {
         <div className="card">
             <h2>{page} </h2>
             <form method="post" onSubmit={sendToBackend}>
-                {page === "Register" && <input type="text" name="name" placeholder="Name" onChange={handleChange} value={formValue.name} />}
-                <input name="email" type="email" placeholder="Email" onChange={handleChange} value={formValue.email} />
-                {page === "Register" && <input type="text" name="contact" placeholder="Contact" onChange={handleChange} value={formValue.contact} />}
-                <input name="password" type="password" placeholder="Password" onChange={handleChange} value={formValue.password} />
-                {page === "Register" && <input name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formValue.confirmPassword} />}
-                <input type="submit" className="button-large button-primary" value={page} />
+                {page === "Register" && <input type="text" className="input"  name="name" placeholder="Name" onChange={handleChange} value={formValue.name} />}
+                <input name="email" className="input" type="email" placeholder="Email" onChange={handleChange} value={formValue.email} />
+                {page === "Register" && <input className="input"  type="text" name="contact" placeholder="Contact" onChange={handleChange} value={formValue.contact} />}
+                <input name="password"className="input"  type="password" placeholder="Password" onChange={handleChange} value={formValue.password} />
+                {page === "Register" && <input className="input"  name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formValue.confirmPassword} />}
+                <input type="submit" className="input" class="button-large button-primary" value={page} />
             </form>
             <input type="button" value={page === "Login" ? "Register" : "Sign-in"} className="button-large button-secondary" onClick={switchPage} />
 
