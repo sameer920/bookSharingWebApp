@@ -1,0 +1,37 @@
+.btn{
+    border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    -o-border-radius: 25px;
+    height:12%;
+    width:30%;
+    border: 0px;
+    color: rgb(117, 117, 219);
+    margin: auto;
+    /* padding: 2vmin; */
+}
+
+.btn:hover{
+
+    cursor: pointer;
+    color: rgb(37, 37, 231);
+}
+.headbook{
+    background-color: rgb(171, 219, 219);
+    height: 30%;
+    color: rgb(0, 140, 233);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 5vmin;
+
+
+
+
+}
+.headbook > *{
+    margin-top: 5px ;
+    height: 45%;
+}

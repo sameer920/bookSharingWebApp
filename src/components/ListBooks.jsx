@@ -3,6 +3,8 @@ import BookCover from "./BookCover";
 import BookDisplay from "./BookDisplay";
 import "./styles/ListBooks.css";
 import "./styles/ListBooks.css";
+import { Navigate, redirect, Route } from "react-router-dom";
+let path = "http://localhost:4000/";
 
 var obje = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
@@ -28,16 +30,6 @@ function ListBooks(props) {
     usertypename: "amin", //owner user_given
     text: "",
   });
-  // const [image,setimage] =useState("");
-  // const [name,setname]=useState("");
-  // const [author,setauthor]=useState("");
-  // const [details,setdetails]=useState("");
-  // const [condition,setcondition]=useState(0);
-  // const [cover,setcover]=useState("");
-  // const [date,setdate]=useState("");
-  // const [div,setdiv]=useState("");  //dte or dte tken
-  // const [btn,setbtn]=useState("");   //remove or done reding
-  // const [state,setstate]=useState("");
 
   function close(e) {
     set(false);
@@ -45,27 +37,29 @@ function ListBooks(props) {
   function click(e) {
     const st = e.target.parentNode.parentNode.id;
     if (st === "bookssharing") {
+      if (e.target.id === "add") {
+        console.log("yes");
+        window.location.href = "/AddBooks";
+      }
       // setimg(e.target.src);
-      setobj({ ...obj, image: e.target.src });
-      // obj1.image=arr[3];
-      setcond(true);
-      set(true);
-      setrev(false);
-      // setimage(e.target.src);
-      // setname("dummy nme");
-      // setauthor("dummy uthor");
-      // setdetails("no detils");
-      // setcondition(8);
-      // setcover("soft");
-      // setdate("23-2-2020");
-      // setdiv("Dte");
-      // setbtn("remove");
+      else {
+        setobj({ ...obj, image: e.target.src });
+        // obj1.image=arr[3];
+        setcond(true);
+        fetch(path + "Library/sharing")
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+
+        set(true);
+        setrev(false);
+      }
     } else if (st === "booksreading") {
       // setimg(e.target.src);
       setcond(false);
       setowner(true);
       set(true);
       setrev(false);
+      setbtn(false);
       setobj({ ...obj, datetype: "date taken" });
       setobj({ ...obj, image: e.target.src });
     } else if (st === "booksgiven") {
@@ -76,26 +70,27 @@ function ListBooks(props) {
       setrev(false);
       //   setobj({ ...obj, datetype: "date taken" });
       //   setobj({ ...obj, usertype: "user" });
-      setobj({ ...obj, image: e.target.src, usertype: "user", datetype: "date given" });
-    }
-    else if (st === "reviews") {
+      setobj({
+        ...obj,
+        image: e.target.src,
+        usertype: "user",
+        datetype: "date given",
+      });
+    } else if (st === "reviews") {
       setcond(false);
       setowner(false);
       setbtn(true);
       setrev(true);
 
-      setobj({ ...obj, image: e.target.src, datetype: "Review date ", text: "nyy", btn_name: "edit" });
+      setobj({
+        ...obj,
+        image: e.target.src,
+        datetype: "Review date ",
+        text: "nyy",
+        btn_name: "edit",
+      });
       set(true);
     }
-
-    // console.log(display);
-    // console.log(document.getElementById("1").parentElement);
-    // document.getElementById("root").classList.add("salmon");
-    // document.getElementById("bookbody").classList.add("salmon");
-    // document.getElementById("bookbody").classList.add("aa");
-
-    // document.getElementById("ul").classList.add("salmon");
-    // console.log(display);
   }
 
   // const []
@@ -115,6 +110,7 @@ function ListBooks(props) {
 
         {props.value1 ? (
           <BookCover
+            id={"add"}
             src={"add.png"}
             className={"small details"}
             onpress={click}
@@ -135,7 +131,6 @@ function ListBooks(props) {
       ) : (
         <></>
       )}
-
     </>
   );
 }
