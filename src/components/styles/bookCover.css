@@ -1,6 +1,7 @@
 .bookCover{
-    border-radius: 1vmax;
+    border-radius: 0.9vmax;
     margin: 2vmin;
+    box-shadow: 0px 5px 5px rgb(167, 166, 166);
 }
 
 .large{
@@ -8,5 +9,20 @@
 }
 
 .small{
-    width: 12vmin
+    width: 20vmin;
+    height: 27vh;
+}
+
+
+.extraSmall{
+    width: 5.5vmax;
+    height: 8vmax;
+    border-radius: 6px;
+}
+
+@media (max-width: 1000px){
+    .small{
+        width: 14vmax;
+        height: 18vh;
+    }
 }

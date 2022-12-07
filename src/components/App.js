@@ -32,7 +32,7 @@ let reviewArr = [{
 ]
 
 let book = {
-  src: "bricks.jpg",
+  src: "testCover.jpg",
   name: "test book",
   alt: "test",
   about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

@@ -1,0 +1,41 @@
+.details{
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+.details:hover{
+    cursor: pointer;
+}
+
+.Flex{
+    display: flex;
+    overflow-x: auto;
+}
+.wrap{
+    flex-wrap: wrap;
+}
+.salmon{
+    /* filter:blur(6px);
+    -webkit-filter:blur(6px); */
+    /*overflow: hidden;
+    */z-index: -2;
+        /*position: fixed;
+    *//*left: 0px;
+    top: 0px;
+    *//*margin-left: -8px;
+    margin-top: -8px;
+    */
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: red;
+    filter: blur(3px);
+    z-index: -1; */
+    /* position:static; */
+
+
+}

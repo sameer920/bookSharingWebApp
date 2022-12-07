@@ -1,0 +1,37 @@
+.searchComponent{
+    display: grid;
+    grid-template-columns: 30vw 1fr;
+    grid-template-rows: 1fr;
+}
+
+.bookDisplay{
+    place-self: center;
+    grid-column: 1 /span 1;
+}
+
+.bookDetails{
+    text-align: left;
+    justify-self: start;
+    margin-left: 1vw;
+    grid-column: 2 /span 1;
+    align-self: center;
+}
+
+.searchDivider{
+    width: 85vw;
+    grid-column: 1 /span 2;
+    justify-self: center;
+}
+
+.smallSearch{
+    font-size: 10px;
+    grid-template-columns: 14vw 35vw;
+    width: 20px;
+    height: 20vmax;
+}
+
+.searchDividersmallSearch{
+    width: 40vw;
+    grid-column: 1 /span 2;
+    justify-self: center;
+}
