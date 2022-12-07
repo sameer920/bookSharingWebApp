@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./server/.env" }); // environment variables
+require("dotenv").config({ path: "./.env" }); // environment variables
 const { Client } = require("pg");
 const express = require("express");
 const session = require("express-session");
