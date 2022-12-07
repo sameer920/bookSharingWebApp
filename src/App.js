@@ -20,6 +20,7 @@ import Explore from "./components/Explore";
 import SearchComponent from "./components/SearchComponent";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
+import AddBooks from "./components/AddBooks";
 
 let book = {
   src: "testCover.jpg",
@@ -75,6 +76,8 @@ function App() {
             // <SearchComponent book={book} />
             <Profile />
             } />
+            <Route path="/AddBooks" element={<AddBooks text={"book"}/>} />
+            <Route path="/AddReviews" element={<AddBooks text={"review"}/>} />
         </Routes>
       </Router>
 

@@ -287,6 +287,27 @@ app.get("/Explore/", function (req, res) {
     })
 });
 
+app.get("/Library/sharing",function(req,res){
+    console.log("shred");
+    const obj={
+        Title:"min",
+        Author : "bckend",
+        user:"no ide",
+        Details :"lorem20",
+        Condition :9,
+        Hardcover :"yes",
+        date_given :"2-2-2002"
+    }
+    console.log(obj)
+    return res.json(obj);
+})
+app.get("/Library/shared",function(req,res){
+    console.log("shred");
+
+})
+app.get("/Library/reviews",function(req,res){
+    console.log("shred");
+})
 
 client.on('error', (e) => {
     console.log(e);
