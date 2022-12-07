@@ -316,12 +316,17 @@ app.get("/register", checkAunthenticated, function (req, res) {
 })
 
 app.get("/getUserInfo", function (req, res) {
-    res.json({
-        id: req["user"].id,
-        name: req["user"].name,
-        email: req["user"].email,
-        contact: req["user"].contact,
-    });
+    if (req.isAuthenticated()) {
+        res.json({
+            id: req["user"].id,
+            name: req["user"].name,
+            email: req["user"].email,
+            contact: req["user"].contact,
+        });
+    }
+    else {
+        res.redirect("/Register")
+    }
 })
 
 
