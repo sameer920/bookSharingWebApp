@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles/loginAndRegister.css";
 
 function Register() {
+    fetch("http://localhost:4000/Register").then(response =>response.json()).then(data => console.log(data))
     const [page, changePage] = useState("Login");
     function switchPage() {
         if (page === "Login") {
@@ -81,7 +82,12 @@ function Register() {
             body: JSON.stringify(formValue),
             credentials:"include"
         })
-            .then((response) => response.json())
+            .then((response) => {
+                // console.log(response)
+                if (response.redirected === true){
+                    window.location.href = response.url.substring(response.url.lastIndexOf("/"));
+                }
+            })
             .then((data) => console.log(data))
             .catch(err => console.log(err))
 
@@ -89,7 +95,7 @@ function Register() {
 
     return <div>
         <img className="big-logo" src="/logo.png" alt="logo" />
-        <div class="card">
+        <div className="card">
             <h2>{page} </h2>
             <form method="post" onSubmit={sendToBackend}>
                 {page === "Register" && <input type="text" className="input"  name="name" placeholder="Name" onChange={handleChange} value={formValue.name} />}
@@ -99,7 +105,7 @@ function Register() {
                 {page === "Register" && <input className="input"  name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formValue.confirmPassword} />}
                 <input type="submit" className="input" class="button-large button-primary" value={page} />
             </form>
-            <input type="button" value={page === "Login" ? "Register" : "Sign-in"} class="button-large button-secondary" onClick={switchPage} />
+            <input type="button" value={page === "Login" ? "Register" : "Sign-in"} className="button-large button-secondary" onClick={switchPage} />
 
         </div>
     </div>

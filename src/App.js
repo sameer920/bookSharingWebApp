@@ -17,7 +17,7 @@ import {
 } from "react-router-dom";
 // eslint-disable-next-line
 import Explore from "./components/Explore";
-import SearchComponent from "./components/SearchComponent";
+// import SearchComponent from "./components/SearchComponent";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import AddBooks from "./components/AddBooks";
@@ -72,12 +72,16 @@ function App() {
           <Route path="/Explore" element={<Explore onc={page_func} value={false} value1={false}/>}></Route>
           <Route path="/MyProfile" element={<Profile onc={page_func} user={user}/>} ></Route>
           <Route path="/Register" element={<Register onc={page_func}/>} />
-          <Route path="/test" element={
-            <SearchComponent book={book} className="small" />
+          {/* <Route path="/test" element={
+            // <SearchComponent book={book} className="small" />
             // <Profile />
+
             } />
             <Route path="/AddBooks" element={<AddBooks text={"book"}/>} />
             <Route path="/AddReviews" element={<AddBooks text={"review"}/>} />
+
+            } /> */}
+
         </Routes>
       </Router>
 

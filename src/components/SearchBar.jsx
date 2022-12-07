@@ -16,7 +16,7 @@ function SearchBar(props) {
         if (event !== null) {
             event.preventDefault();
         }
-        return fetch("http://localhost:4000/" + event.search, {
+        return fetch("http://localhost:4000/" + "Search", {
             method: "POST",
             headers: new Headers({ 'content-type': 'application/json', 'Accept': 'application/json' }),
             mode: "cors",
@@ -33,7 +33,7 @@ function SearchBar(props) {
             <input type="text" name="searchBook" placeholder="Search Book" className="searchBar" onChange={handleFormState} value={inputData} />
         </form>
         {items.length >= 3 && <div className="results">
-            {items.map(item => <SearchComponent book={item} className="small"/>)}
+            {items.map(item => <SearchComponent book={item} className="smallSearch"/>)}
         </div>}
     </div>
 }

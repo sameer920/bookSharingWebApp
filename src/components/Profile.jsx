@@ -4,7 +4,7 @@ import UserAvatar from "./UserAvatar";
 import ListBooks from "./ListBooks";
 import "./styles/Profile.css";
 
-let path = "https://localhost:4000/"
+let path = "http://localhost:4000/"
 
 function Profile(props) {
     let [user, setUser] = useState({});
