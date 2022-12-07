@@ -11,6 +11,7 @@ var cors = require("cors");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }))
+app.use(express.static(__dirname + '/images'));
 
 app.use(cors({ credentials: true, methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], origin: "http://localhost:3000" }));
 
@@ -26,7 +27,7 @@ const client = new Client({
 
 client.connect((err) => {
     if (err) {
-        console.log(err);
+        console.log("Error while connecting",err);
         return;
     }
     else {
@@ -52,7 +53,7 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, cb)
         if (err) {
             //some error occured while authenticating
             // console.log(err);
-            console.log(err)
+            console.log("Error occured while reading from users for authentication",err)
             return cb(err);
         }
         else {
@@ -86,7 +87,7 @@ passport.deserializeUser((id, cb) => {
     console.log("I called")
     client.query(`SELECT * FROM users WHERE id=$1`, [id], (err, result) => {
         if (err) {
-            console.log(err)
+            console.log("Error while reading users for deserialize ",err)
             cb(err);
         }
         else {
@@ -133,7 +134,7 @@ app.post('/login', passport.authenticate("local",
 function checkIfUniqueId(userId) {
     client.query(`Select id from users where id=$1`, [userId], (err, res) => {
         if (err) {
-            console.log(err)
+            console.log("Error while reading in check if unique" ,err)
         }
         else {
             if (res.rowCount == 0) {
@@ -159,7 +160,7 @@ app.post('/Register', checkNotAuthenticated, async function (req, res) {
 
     client.query(`SELECT email FROM users where email=$1`, [email], (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Error while retrieving emails from database in register",err);
         }
         else if (result.rowCount == 0) {
             if (password == confirmPassword) {
@@ -170,7 +171,7 @@ app.post('/Register', checkNotAuthenticated, async function (req, res) {
                 client.query(`INSERT INTO users(id, name, email, password, contact) VALUES($1, $2, $3, $4, $5)`,
                     [userId, name, email, hashedPassword, contact], (err, result) => {
                         if (err) {
-                            console.log(err)
+                            console.log("Error while inserting in database, Register",err)
                         }
                         else {
                             console.log({ result: "true" });
@@ -210,7 +211,7 @@ app.get("/Book/:bookId", function (req, res) {
     let bookId = req.params.bookId;
     client.query("Select * from books where bid=$1", [bookId], (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Error while retrieving book",err);
         }
         else {
             return res.json(result.rows)
