@@ -16,7 +16,7 @@ function SearchBar(props) {
         if (event !== null) {
             event.preventDefault();
         }
-        return fetch("http://localhost:4000/" + search, {
+        return fetch("http://localhost:4000/" + "Search", {
             method: "POST",
             headers: new Headers({ 'content-type': 'application/json', 'Accept': 'application/json' }),
             mode: "cors",
