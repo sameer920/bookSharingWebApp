@@ -100,7 +100,7 @@ function checkAunthenticated(req, res, next) {
         console.log("heelo")
         return next();
     }
-    res.redirect("/Login");
+    res.redirect("/Register");
 }
 
 function checkNotAuthenticated(req, res, next) {
@@ -116,7 +116,7 @@ app.listen(4000, () => { console.log("Listening on port 4000") })
 //post requests:
 app.post('/login', checkNotAuthenticated, passport.authenticate("local",
     {
-        failureRedirect: "/Login",
+        failureRedirect: "/Register",
         failureMessage: true,
         successRedirect: "/MyLibrary"
     }
@@ -302,6 +302,7 @@ app.get("/Library/sharing",function(req,res){
     console.log(obj)
     return res.json(obj);
 })
+
 app.get("/Library/shared",function(req,res){
     console.log("shred");
 
@@ -309,6 +310,11 @@ app.get("/Library/shared",function(req,res){
 app.get("/Library/reviews",function(req,res){
     console.log("shred");
 })
+
+app.get("/register", checkAunthenticated, function(req,res){
+    res.json({response:"hi"})
+})
+
 
 client.on('error', (e) => {
     console.log(e);
