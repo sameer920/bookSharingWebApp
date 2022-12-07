@@ -27,7 +27,7 @@ function BookDisplay(props) {
             style={{ justifyContent: "center" }}
           />
         </div>
-        <div  className="screen_div">
+        <div className="screen_div">
           <h2>Title : {props.obj.name}</h2>
           <h2>Author : {props.obj.author}</h2>
           {/* //owner dikhna ha ya nhi */}

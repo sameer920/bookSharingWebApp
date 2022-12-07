@@ -114,11 +114,11 @@ function checkNotAuthenticated(req, res, next) {
 app.listen(4000, () => { console.log("Listening on port 4000") })
 
 //post requests:
-app.post('/login', checkNotAuthenticated, passport.authenticate("local",
+app.post('/login', passport.authenticate("local",
     {
         failureRedirect: "/Register",
         failureMessage: true,
-        successRedirect: "/MyLibrary"
+        successRedirect: "/Library"
     }
 ), (req, res) => {
     console.log(req.session)
@@ -192,7 +192,7 @@ app.post('/Register', checkNotAuthenticated, async function (req, res) {
     })
 })
 
-app.get("/MyLibrary", checkAunthenticated, (req, res) => {
+app.get("/Library", checkAunthenticated, (req, res) => {
     return res.json({ result: "hello world" });
 })
 
@@ -247,7 +247,7 @@ app.get("/MyProfile/:userId", function (req, res) {
     })
 });
 
-app.get("/Explore/", function (req, res) {
+app.get("/Explore", function (req, res) {
     function shuffleArray(array) {
         if (array.length === 1) {
             return;

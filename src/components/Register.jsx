@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./styles/loginAndRegister.css";
 
 function Register() {
-    fetch("http://localhost:4000/Register").then(response =>response.json()).then(data => console.log(data))
+    // fetch("http://localhost:4000/Register").then(response =>response.json()).then(data => console.log(data))
     const [page, changePage] = useState("Login");
     function switchPage() {
         if (page === "Login") {
