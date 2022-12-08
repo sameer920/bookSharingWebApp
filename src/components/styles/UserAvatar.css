@@ -26,8 +26,8 @@
     object-fit: cover;
     padding-right: 0px;
     align-self: center;
-    grid-row: 1 / span 2;
-    grid-column: 1 / span 1;
+    grid-row: 1 / span 2 !important;
+    grid-column: 1 / span 1 !important;
     justify-self: end;
 }
 
@@ -35,26 +35,30 @@
 .name{
     align-self: end;
     margin: 2% 0;
+    grid-row: 1 /span 1 !important;
+    grid-column: 2 / span1 !important;
 }
-/* 
+
 .subheading{
-} */
+    grid-row: 2 /span 1 !important;
+    grid-column: 2 / span1 !important;
+}
 
 
-.profile.userAvatar{
+.profile .userAvatar{
     grid-template-rows: repeat(3,1fr);
     grid-template-columns: 85vw 1fr;
     width: 12vmax;
     height: 12vmax;
 }
 
-.profile.userProfilePic{
+.profile .userProfilePic{
     grid-row: 1 / span 3;
     grid-column: 2 /span 1;
     place-self: center;
 }
 
-.profile.name{
+.profile .name{
     margin: 0vh 1vw 00vh 4vw;
     grid-row: 1 /span 1;
     grid-column: 1 / span 1;
@@ -62,7 +66,7 @@
     align-self:end !important;
 
 }
-.profile.subheading{
+.profile .subheading{
     margin: 0vh 1vw 0vh 4vw;
     grid-row: 2 /span 1;
     grid-column: 1 / span 1;
@@ -70,7 +74,7 @@
     align-self: center !important;
 }
 
-.profile.contact{
+.profile .contact{
     margin: 0vh 1vw 0vh 4vw;
     grid-row: 3 /span 1;
     grid-column: 1 / span 1;

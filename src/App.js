@@ -21,6 +21,7 @@ import Explore from "./components/Explore";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import AddBooks from "./components/AddBooks";
+import BookPage from "./components/BookPage";
 
 let book = {
   src: "testCover.jpg",
@@ -79,7 +80,7 @@ function App() {
             } /> */}
             <Route path="/AddBooks" element={<AddBooks text={"book"}/>} />
             <Route path="/AddReviews" element={<AddBooks text={"review"}/>} />
-
+            <Route exact path="/Book/:bookId" element={<BookPage state={{data:""}} />} />
             {/* }  */}
             {/* /> */}
 
