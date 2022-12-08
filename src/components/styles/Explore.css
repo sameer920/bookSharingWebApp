@@ -16,3 +16,8 @@
     border: 0.2vmin solid #5545cb;
     padding: 1.8vmin;
 }
+
+.explore .searchBar{
+    margin-left: auto !important;
+    margin-right: auto;
+}

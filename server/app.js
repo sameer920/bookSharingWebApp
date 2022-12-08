@@ -34,7 +34,7 @@ const client = new Client({
 });
 
 var storage = multer.diskStorage({
-    destination: "./public2/images",
+    destination: __dirname + '/public2/images',
     filename: (req, file, cb) => {
         client.query(
             ` select bid from books
@@ -63,7 +63,8 @@ app.post("/upload", (req, res) => {
     });
 });
 
-app.use(express.static("./public2"));
+app.use(express.static("./public2/images"));
+app.use(express.static(__dirname + './public2/images'));
 
 client.connect((err) => {
     if (err) {
@@ -240,8 +241,7 @@ app.get("/test", checkAunthenticated, (req, res) => {
 });
 
 app.get("/Book/:bookId", function (req, res) {
-
-    console.log('bookId')
+    console.log("book id")
     let bookId = req.params.bookId;
     client.query("Select * from books where bid=$1", [bookId], (err, result) => {
         if (err) {
@@ -310,7 +310,7 @@ app.get("/Explore", function (req, res) {
                     recommendedBooks: [],
                 };
                 for (let i = 0; i < 10; i++) {
-                    console.log(i);
+                    // console.log(i);
                     exploreResult.popularBooks.push(result.rows[i]);
                     if (i === result.rowCount - 1) {
                         break;
@@ -559,6 +559,32 @@ app.post("/AddReviews", async function (req, res) {
     // res.send("ok");
 });
 
+app.post("/Search", function(req, res){
+    console.log(req.body.searchStr)
+    let searchStr = req.body.searchStr;
+
+    client.query(`Select * from books where book_name LIKE $1`,[searchStr+'%'],(err,result)=>{
+        if (err) console.log(err)
+        if (!err){
+            console.log("hello")
+            if (result.rows.length > 0){
+                res.json(result.rows);
+            }
+            else{
+                client.query(`Select * from books where bid in (Select
+                     bid from books_of_authors where aid in (
+                        Select aid from authors where author_name like $1
+                     ) )`, [searchStr+'%'], (err,results)=>{
+                        if (err) console.log(err)
+                        if (!err){
+                            res.json(results.rows);
+                        }
+                     })
+            }
+        }
+    })
+})
+
 client.on("error", (e) => {
     console.log(e);
 });
@@ -623,3 +649,4 @@ app.get("/booksgiven/:Id", function (req, res) {
 //      res.json(result.rows);
 //    })
 //  });
+
