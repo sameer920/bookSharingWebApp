@@ -83,7 +83,6 @@ function Register() {
             credentials: "include"
         })
             .then((response) => {
-                response.json().then(data => console.log(data))
                 // console.log(response)
                 if (response.redirected === true) {
                     window.location.href = response.url.substring(response.url.lastIndexOf("/"));
