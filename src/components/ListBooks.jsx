@@ -3,11 +3,36 @@ import BookCover from "./BookCover";
 import BookDisplay from "./BookDisplay";
 import "./styles/ListBooks.css";
 import { Navigate, redirect, Route } from "react-router-dom";
+import { response } from "express";
 let path = "http://localhost:4000/";
 
 var obje = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 function ListBooks(props) {
+  const [books_arr,setbooks]=useState([]);
+  fetch("http://localhost:4000/getUserInfo", {
+      method: "GET",
+      mode: "cors",
+      headers: new Headers({
+        "content-type": "application/json",
+        Accept: "application/json",
+      }),
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const user=data;
+        fetch("http://localhost:4000/"+props.id+"/:"+user.id,{
+          method: "GET",
+          mode: "cors",
+          headers: new Headers({
+            "content-type": "application/json",
+            Accept: "application/json",
+          }),
+          credentials: "include",
+        }).then((response)=>response.json())
+        .then((data)=>setbooks(data));
+      });
   const [display, set] = useState(false);
   const [cond, setcond] = useState(false); //to display condition or not
   const [owner, setowner] = useState(false); //to display owner/user will be shown
@@ -103,15 +128,17 @@ function ListBooks(props) {
   return (
     <>
       <div id={props.id} className={props.value ? "Flex " : "Flex wrap"}>
-        {obje.map((val, val1) => {
-          return (
-            <BookCover
-              src={props.image}
-              className={"small details"}
-              onpress={click}
-            />
-          );
+        {books_arr.map(( Src,i) => {
+         return(
+          <BookCover
+            src={props.image}
+            className={"small details"}
+            onpress={click}
+          />
+          // (Src,i)
+        );
         })}
+
 
         {props.value1 ? (
           <BookCover

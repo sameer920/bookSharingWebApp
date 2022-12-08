@@ -21,7 +21,7 @@ import Explore from "./components/Explore";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import AddBooks from "./components/AddBooks";
-
+import React, { Component }  from 'react';
 let book = {
   src: "testCover.jpg",
   name: "test book",
