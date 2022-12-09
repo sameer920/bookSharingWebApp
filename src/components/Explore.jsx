@@ -12,22 +12,24 @@ import ExploreListComponent from "./ExploreListComponent";
 let path = "http://localhost:4000";
 
 function Explore(props){
-
+    let x;
     const [popular, setPopular] = useState([{a:""}]);
     const [recommended, setRecommended] = useState([{a:""}]);
     useEffect(()=>{
-        fetch("/Explore")
-        .then(response => response.json)
+        fetch(path + "/Explore")
+        .then(response => response.json())
         .then(data => {
             setPopular(data.popularBooks);
             setRecommended(data.recommendedBooks);
         });
-    });
+    }, [x]);
 
     function openBook(id){
+        if (typeof(id) != "string"){
+            id =id.toString()
+        }
         window.location.href = "/Book/" + id;
     }
-
     return <div className="explore">
 
         <SearchBar />

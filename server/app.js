@@ -34,7 +34,7 @@ const client = new Client({
 });
 
 var storage = multer.diskStorage({
-    destination: "./public2/images",
+    destination: __dirname + '/public2/images',
     filename: (req, file, cb) => {
         client.query(
             ` select bid from books
@@ -241,8 +241,7 @@ app.get("/test", checkAunthenticated, (req, res) => {
 });
 
 app.get("/Book/:bookId", function (req, res) {
-
-    console.log('bookId')
+    console.log("book id")
     let bookId = req.params.bookId;
     client.query("Select * from books where bid=$1", [bookId], (err, result) => {
         if (err) {
@@ -311,7 +310,7 @@ app.get("/Explore", function (req, res) {
                     recommendedBooks: [],
                 };
                 for (let i = 0; i < 10; i++) {
-                    console.log(i);
+                    // console.log(i);
                     exploreResult.popularBooks.push(result.rows[i]);
                     if (i === result.rowCount - 1) {
                         break;
@@ -560,6 +559,32 @@ app.post("/AddReviews", async function (req, res) {
     // res.send("ok");
 });
 
+app.post("/Search", function(req, res){
+    console.log(req.body.searchStr)
+    let searchStr = req.body.searchStr;
+
+    client.query(`Select * from books where book_name LIKE $1`,[searchStr+'%'],(err,result)=>{
+        if (err) console.log(err)
+        if (!err){
+            console.log("hello")
+            if (result.rows.length > 0){
+                res.json(result.rows);
+            }
+            else{
+                client.query(`Select * from books where bid in (Select
+                     bid from books_of_authors where aid in (
+                        Select aid from authors where author_name like $1
+                     ) )`, [searchStr+'%'], (err,results)=>{
+                        if (err) console.log(err)
+                        if (!err){
+                            res.json(results.rows);
+                        }
+                     })
+            }
+        }
+    })
+})
+
 client.on("error", (e) => {
     console.log(e);
 });
@@ -659,25 +684,4 @@ app.get("/booksreading/data/:Id/:file_name", function (req, res) {
 //      res.json(result.rows);
 //    })
 //  });
-app.get("/requests/:Id", function (req, res) {
-    let userId = req.params.Id;
-    // let id=path.parse(userId).name; // index
-    console.log("sssss",userId," kjkjk");
-    client.query("select id,date_req,name,book_name,picture from users natural  join (select target_user as id,book_name,picture,date_req  from requests natural join books where owner=$1 and state is null) as t1",[userId],(error,result)=>{
-      console.log(result.rows);
-        res.json(result.rows);
-    })
- });
- app.post("/update_req",function(req,res){
-    console.log(req.body);
-    client.query("update requests set state=$1,owner_seen=true where owner=$2 and target_user=$3 bid=(select bid from books where book_name=$4)",[req.body.state,req.body.owner,req.body.id,req.body.title],(error,result)=>{
-        if(!error)
-        if(req.body.state==true){
-            client.query("update requests set state=false,owner_seen=true  where owner=$1 and bid=(select bid from books where book_name=$2)",[req.body.owner,req.body.title],(errr,ress)=>{})
-            client.query("select bid from books where book_name=$1",[req.boby.title],(errr,ress)=>{
-                client.query(" insert into shared_books values($1,$2,$3,$4)",[ress.rows[0].bid,req.body.owner,req.body.id,'2022-12-09'],(e,r)=>{})
-            })
-           
-        }
-      })
- });
+
