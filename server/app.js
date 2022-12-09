@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./.env" }); // environment variables
+require("dotenv").config({ path: "./server/.env" }); // environment variables
 const { Client } = require("pg");
 const express = require("express");
 const session = require("express-session");
@@ -15,7 +15,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(__dirname + '/images'));
- 
+
 
 app.use(
 	cors({
@@ -64,7 +64,7 @@ app.post("/upload", (req, res) => {
 });
 
 app.use(express.static("./public2/images"));
-app.use(express.static(__dirname + './public2/images'));
+app.use(express.static(__dirname + '/public2/images'));
 
 client.connect((err) => {
 	if (err) {
@@ -373,194 +373,194 @@ app.get("/getUserInfo", function (req, res) {
 
 app.post("/AddBooks", async function (req, res) {
 
-    console.log(req.body);
-    client.query("SELECT bid FROM books WHERE book_name=$1 ", [req.body.title], (err, result) => {
-        if (err) {
-            console.log("Error while retrieving book", err);
-        }
-        else {
-            console.log(result.rowCount);
-            if (result.rowCount > 0) {
-                let ts = Date.now();
-                let date_ob = new Date(ts);
-                let date = date_ob.getDate();
-                let month = date_ob.getMonth() + 1;
-                let year = date_ob.getFullYear();
-                let date_f = year + "-" + month + "-" + date;
-                client.query("insert into uploaded_books(bid,owner,date_uploade,hardcover,condition,add_details,availability) values($1,$2,$3,$4,$5,$6,$7)", [
-                    result.rows[0].bid, req.body.id, date_f, req.body.hardcover, req.body.condition, req.body.details, true], (err, rest) => {
-                        if (err) console.log("sharing already", err);
-                        else res.send(true);
-                    }
-                );
-            } else {
-                client.query(
-                    "insert into books(book_name,rating,synopsis,no_of_reviews) values($1,$2,$3,$4)",
-                    [req.body.title, 0, req.body.synopsis, 0],
-                    (err, resu) => {
-                        if (!err) {
-                            client.query(
-                                "select bid from books offset ((select count(*) from books)-1)",
-                                (err, results) => {
-                                    if (!err) {
-                                        let ts = Date.now();
-                                        let date_ob = new Date(ts);
-                                        let date = date_ob.getDate();
-                                        let month = date_ob.getMonth() + 1;
-                                        let year = date_ob.getFullYear();
-                                        let date_f = year + "-" + month + "-" + date;
-                                        client.query(
-                                            "insert into uploaded_books(bid,owner,date_uploade,hardcover,condition,add_details,availability) values($1,$2,$3,$4,$5,$6,$7)",
-                                            [
-                                                results.rows[0].bid,
-                                                req.body.id,
-                                                date_f,
-                                                req.body.hardcover,
-                                                req.body.condition,
-                                                req.body.details,
-                                                true,
-                                            ],
-                                            (err, ress) => {
-                                                client.query("select aid from authors where author_name=$1",[req.body.author],(sel_err,sel_auth)=>{
-                                                    if(sel_auth.rowCount>0){
-                                                        client.query("insert into books_of_authors values($1,$2)",[results.rows[0].bid,sel_auth.rows[0].aid],(ins_err,ins_res)=>{
-                                                            if(ins_err){
-                                                                console.log(ins_err);
-                                                            }
-                                                            else{
-                                                                console.log("pyrmind of doom");
-                                                            }
-                                                        })
+	console.log(req.body);
+	client.query("SELECT bid FROM books WHERE book_name=$1 ", [req.body.title], (err, result) => {
+		if (err) {
+			console.log("Error while retrieving book", err);
+		}
+		else {
+			console.log(result.rowCount);
+			if (result.rowCount > 0) {
+				let ts = Date.now();
+				let date_ob = new Date(ts);
+				let date = date_ob.getDate();
+				let month = date_ob.getMonth() + 1;
+				let year = date_ob.getFullYear();
+				let date_f = year + "-" + month + "-" + date;
+				client.query("insert into uploaded_books(bid,owner,date_uploade,hardcover,condition,add_details,availability) values($1,$2,$3,$4,$5,$6,$7)", [
+					result.rows[0].bid, req.body.id, date_f, req.body.hardcover, req.body.condition, req.body.details, true], (err, rest) => {
+						if (err) console.log("sharing already", err);
+						else res.send(true);
+					}
+				);
+			} else {
+				client.query(
+					"insert into books(book_name,rating,synopsis,no_of_reviews) values($1,$2,$3,$4)",
+					[req.body.title, 0, req.body.synopsis, 0],
+					(err, resu) => {
+						if (!err) {
+							client.query(
+								"select bid from books offset ((select count(*) from books)-1)",
+								(err, results) => {
+									if (!err) {
+										let ts = Date.now();
+										let date_ob = new Date(ts);
+										let date = date_ob.getDate();
+										let month = date_ob.getMonth() + 1;
+										let year = date_ob.getFullYear();
+										let date_f = year + "-" + month + "-" + date;
+										client.query(
+											"insert into uploaded_books(bid,owner,date_uploade,hardcover,condition,add_details,availability) values($1,$2,$3,$4,$5,$6,$7)",
+											[
+												results.rows[0].bid,
+												req.body.id,
+												date_f,
+												req.body.hardcover,
+												req.body.condition,
+												req.body.details,
+												true,
+											],
+											(err, ress) => {
+												client.query("select aid from authors where author_name=$1", [req.body.author], (sel_err, sel_auth) => {
+													if (sel_auth.rowCount > 0) {
+														client.query("insert into books_of_authors values($1,$2)", [results.rows[0].bid, sel_auth.rows[0].aid], (ins_err, ins_res) => {
+															if (ins_err) {
+																console.log(ins_err);
+															}
+															else {
+																console.log("pyrmind of doom");
+															}
+														})
 
-                                                    }
-                                                    else{
-                                                        client.query("insert into authors(author_name) values($1) returning aid", [req.body.author], (errors, requests) => {
-                                                            client.query("select aid from authors offset ((select count(*) from authors)-1)",  (auth_err,auth_req) => {
-                                                                client.query("insert into books_of_authors values($1,$2)",[results.rows[0].bid,auth_req.rows[0].aid],(ins_err,ins_res)=>{
-                                                                    if(ins_err){
-                                                                        console.log(ins_err);
-                                                                    }
-                                                                    else{
-                                                                        console.log("pyrmind of doom p2");
-                                                                    }
-                                                                })
-                                                             });
-                                                        })
+													}
+													else {
+														client.query("insert into authors(author_name) values($1) returning aid", [req.body.author], (errors, requests) => {
+															client.query("select aid from authors offset ((select count(*) from authors)-1)", (auth_err, auth_req) => {
+																client.query("insert into books_of_authors values($1,$2)", [results.rows[0].bid, auth_req.rows[0].aid], (ins_err, ins_res) => {
+																	if (ins_err) {
+																		console.log(ins_err);
+																	}
+																	else {
+																		console.log("pyrmind of doom p2");
+																	}
+																})
+															});
+														})
 
-                                                    }
+													}
 
-                                                })
-                                                if (err) console.log("sharing already", err);
-                                            }
-                                        );
-                                    }
-                                }
-                            );
-                            res.send(false);
-                        }
-                    }
-                );
-            }
-        }
-    }
-    );
-    // res.send("ok");
+												})
+												if (err) console.log("sharing already", err);
+											}
+										);
+									}
+								}
+							);
+							res.send(false);
+						}
+					}
+				);
+			}
+		}
+	}
+	);
+	// res.send("ok");
 });
 
 app.post("/AddReviews", async function (req, res) {
-    console.log(req.body);
-    client.query("SELECT bid FROM books WHERE book_name=$1 ", [req.body.title], (err, result) => {
-        if (err) {
-            console.log("Error while retrieving book", err);
-        }
-        else {
-            console.log(result.rowCount);
-            if (result.rowCount > 0) {
-                let ts = Date.now();
-                let date_ob = new Date(ts);
-                let date = date_ob.getDate();
-                let month = date_ob.getMonth() + 1;
-                let year = date_ob.getFullYear();
-                let date_f = year + "-" + month + "-" + date;
-                client.query("insert into reviews(bid,id,date,rating,review) values($1,$2,$3,$4,$5)", [
-                    result.rows[0].bid, req.body.id, date_f, req.body.rating, req.body.review], (err, rest) => {
-                        if (err) console.log("sharing already", err);
-                        else {
-                            client.query("update books set rating=rating+$1,no_of_reviews=no_of_reviews+$2 where bid=$3",[req.body.rating,1,result.rows[0].bid],(rating_err,rating_res)=>{res.send(true);});
-                            }
-                    }
-                );
-            } else {
-                client.query(
-                    "insert into books(book_name,rating,synopsis,no_of_reviews) values($1,$2,$3,$4)",
-                    [req.body.title, req.body.rating, req.body.synopsis,1],
-                    (err, resu) => {
-                        if (!err) {
-                            client.query(
-                                "select bid from books offset ((select count(*) from books)-1)",
-                                (err, results) => {
-                                    if (!err) {
-                                        let ts = Date.now();
-                                        let date_ob = new Date(ts);
-                                        let date = date_ob.getDate();
-                                        let month = date_ob.getMonth() + 1;
-                                        let year = date_ob.getFullYear();
-                                        let date_f = year + "-" + month + "-" + date;
-                                        client.query(
-                                            "insert into reviews(bid,id,date,review,rating) values($1,$2,$3,$4,$5)",
-                                            [
-                                                results.rows[0].bid,
-                                                req.body.id,
-                                                date_f,
-                                                req.body.review,
-                                                req.body.rating,
-                                            ],
-                                            (err, ress) => {
-                                                client.query("select aid from authors where author_name=$1",[req.body.author],(sel_err,sel_auth)=>{
-                                                    if(sel_auth.rowCount>0){
-                                                        client.query("insert into books_of_authors values($1,$2)",[results.rows[0].bid,sel_auth.rows[0].aid],(ins_err,ins_res)=>{
-                                                            if(ins_err){
-                                                                console.log(ins_err);
-                                                            }
-                                                            else{
-                                                                console.log("pyrmind of doom");
-                                                            }
-                                                        })
+	console.log(req.body);
+	client.query("SELECT bid FROM books WHERE book_name=$1 ", [req.body.title], (err, result) => {
+		if (err) {
+			console.log("Error while retrieving book", err);
+		}
+		else {
+			console.log(result.rowCount);
+			if (result.rowCount > 0) {
+				let ts = Date.now();
+				let date_ob = new Date(ts);
+				let date = date_ob.getDate();
+				let month = date_ob.getMonth() + 1;
+				let year = date_ob.getFullYear();
+				let date_f = year + "-" + month + "-" + date;
+				client.query("insert into reviews(bid,id,date,rating,review) values($1,$2,$3,$4,$5)", [
+					result.rows[0].bid, req.body.id, date_f, req.body.rating, req.body.review], (err, rest) => {
+						if (err) console.log("sharing already", err);
+						else {
+							client.query("update books set rating=rating+$1,no_of_reviews=no_of_reviews+$2 where bid=$3", [req.body.rating, 1, result.rows[0].bid], (rating_err, rating_res) => { res.send(true); });
+						}
+					}
+				);
+			} else {
+				client.query(
+					"insert into books(book_name,rating,synopsis,no_of_reviews) values($1,$2,$3,$4)",
+					[req.body.title, req.body.rating, req.body.synopsis, 1],
+					(err, resu) => {
+						if (!err) {
+							client.query(
+								"select bid from books offset ((select count(*) from books)-1)",
+								(err, results) => {
+									if (!err) {
+										let ts = Date.now();
+										let date_ob = new Date(ts);
+										let date = date_ob.getDate();
+										let month = date_ob.getMonth() + 1;
+										let year = date_ob.getFullYear();
+										let date_f = year + "-" + month + "-" + date;
+										client.query(
+											"insert into reviews(bid,id,date,review,rating) values($1,$2,$3,$4,$5)",
+											[
+												results.rows[0].bid,
+												req.body.id,
+												date_f,
+												req.body.review,
+												req.body.rating,
+											],
+											(err, ress) => {
+												client.query("select aid from authors where author_name=$1", [req.body.author], (sel_err, sel_auth) => {
+													if (sel_auth.rowCount > 0) {
+														client.query("insert into books_of_authors values($1,$2)", [results.rows[0].bid, sel_auth.rows[0].aid], (ins_err, ins_res) => {
+															if (ins_err) {
+																console.log(ins_err);
+															}
+															else {
+																console.log("pyrmind of doom");
+															}
+														})
 
-                                                    }
-                                                    else{
-                                                        client.query("insert into authors(author_name) values($1) returning aid", [req.body.author], (errors, requests) => {
-                                                            client.query("select aid from authors offset ((select count(*) from authors)-1)",  (auth_err,auth_req) => {
-                                                                client.query("insert into books_of_authors values($1,$2)",[results.rows[0].bid,auth_req.rows[0].aid],(ins_err,ins_res)=>{
-                                                                    if(ins_err){
-                                                                        console.log(ins_err);
-                                                                    }
-                                                                    else{
-                                                                        console.log("pyrmind of doom p2");
-                                                                    }
-                                                                })
-                                                             });
-                                                        })
+													}
+													else {
+														client.query("insert into authors(author_name) values($1) returning aid", [req.body.author], (errors, requests) => {
+															client.query("select aid from authors offset ((select count(*) from authors)-1)", (auth_err, auth_req) => {
+																client.query("insert into books_of_authors values($1,$2)", [results.rows[0].bid, auth_req.rows[0].aid], (ins_err, ins_res) => {
+																	if (ins_err) {
+																		console.log(ins_err);
+																	}
+																	else {
+																		console.log("pyrmind of doom p2");
+																	}
+																})
+															});
+														})
 
-                                                    }
+													}
 
-                                                })
-                                                if (err) console.log("sharing already", err);
-                                            }
-                                        );
-                                    }
-                                }
-                            );
-                            res.send(false);
-                        }
-                    }
-                );
-            }
-        }
-    }
-    );
-    // res.send("ok");
-
+												})
+												if (err) console.log("sharing already", err);
+											}
+										);
+									}
+								}
+							);
+							res.send(false);
+						}
+					}
+				);
+			}
+		}
+	}
+	);
+	// res.send("ok");
+})
 
 app.post("/Search", function (req, res) {
 	console.log(req.body.searchStr)
@@ -626,7 +626,55 @@ app.get("/Owner/:bookId", function (req, res) {
 		}
 	})
 })
+app.get("/requests/:Id", function (req, res) {
+	let userId = req.params.Id;
+	// let id=path.parse(userId).name; // index
+	console.log("sssss", userId, " kjkjk");
+	client.query("select id,date_req,name,book_name,picture from users natural  join (select target_user as id,book_name,picture,date_req  from requests natural join books where owner=$1 and state is null) as t1", [userId], (error, result) => {
+		console.log(result.rows);
+		res.json(result.rows);
+	})
+});
 
+app.post("/update_req", function (req, res) {
+	console.log("body", req.body);
+	client.query("update requests set state=$1,owner_seen=true where owner=$2 and target_user=$3 and bid=(select bid from books where book_name=$4)", [req.body.state, req.body.owner, req.body.id, req.body.title], (error, result) => {
+		if (error) {
+			console.log("error while requesting", error);
+		}
+		if (!error)
+			if (req.body.state === 'true' || req.body.state === true) {
+				let date = new Date().toJSON().slice(0, 10);
+				client.query("update requests set state=false,owner_seen=true  where owner=$1 and bid=(select bid from books where book_name=$2 )", [req.body.owner, req.body.title], (errr, ress) => {
+					if (!errr) {
+						console.log("res")
+						client.query("select bid from books where book_name=$1", [req.body.title], (errr, ress) => {
+							if (errr) {
+								console.log("Not selecting books", errr)
+							}
+							client.query(" insert into shared_books values($1,$2,$3,$4)", [ress.rows[0].bid, req.body.owner, req.body.id, date], (e, r) => {
+								if (e) {
+									console.log("error inserting request", e)
+								}
+							})
+						})
+					}
+
+				})
+
+
+			}
+	})
+});
+// app.get("/requests/:id",(req,res)=>{
+// 	console.log(req.params.id)
+// 	client.query(`select * from requests r, books b where r.owner=$1 and r.bid=b.bid`, [req.params.id], (err, result) => {
+// 		if (err) console.log("error in requests", err);
+// 		else {
+// 			res.json(result.rows);
+// 		}
+// 	})
+// })
 app.get("/Details/:bookId", function (req, res) {
 	let bookId = req.params.bookId;
 	client.query(`Select hardcover, add_details, condition, availability from uploaded_books where bid=$1`, [bookId], (err, result) => {
@@ -658,94 +706,94 @@ app.post("/RequestBook", function (req, res) {
 
 
 app.get("/bookssharing/:Id", function (req, res) {
-   let userId = req.params.Id.slice(1);
-   console.log(userId);
-   client.query("select picture from books where bid in(select bid from uploaded_books where owner=$1 and availability=true)",[userId],(error,result)=>{
-     res.json(result.rows);
-   })
+	let userId = req.params.Id.slice(1);
+	console.log(userId);
+	client.query("select picture from books where bid in(select bid from uploaded_books where owner=$1 and availability=true)", [userId], (error, result) => {
+		res.json(result.rows);
+	})
 });
 
 app.get("/booksreading/:Id", function (req, res) {
-    console.log("hit");
-    let userId = req.params.Id.slice(1);
-    console.log("44343",userId);
-   client.query("select picture from books where bid in (select bid from shared_books where target_user=$1)",[userId],(error,result)=>{
-    res.json(result.rows);
-  })
+	console.log("hit");
+	let userId = req.params.Id.slice(1);
+	console.log("44343", userId);
+	client.query("select picture from books where bid in (select bid from shared_books where target_user=$1)", [userId], (error, result) => {
+		res.json(result.rows);
+	})
 
 });
 
 app.get("/reviewed/:Id", function (req, res) {
-    console.log("hitted");
-    let userId = req.params.Id.slice(1);
-    console.log("ee",userId);
-   client.query("select picture from books where bid in(select bid from reviews where id=$1 )",[userId],(error,result)=>{
-    res.json(result.rows);
-  })
+	console.log("hitted");
+	let userId = req.params.Id.slice(1);
+	console.log("ee", userId);
+	client.query("select picture from books where bid in(select bid from reviews where id=$1 )", [userId], (error, result) => {
+		res.json(result.rows);
+	})
 });
 
 app.get("/booksgiven/:Id", function (req, res) {
-    let userId = req.params.Id.slice(1);
-    console.log("ttt",userId);
-   client.query("select picture from books where bid in(select bid from shared_books where owner=$1)",[userId],(error,result)=>{
-    res.json(result.rows);
-  })
+	let userId = req.params.Id.slice(1);
+	console.log("ttt", userId);
+	client.query("select picture from books where bid in(select bid from shared_books where owner=$1)", [userId], (error, result) => {
+		res.json(result.rows);
+	})
 });
 app.get("/bookssharing/data/:Id/:file_name", function (req, res) {
-    let userId = req.params.Id;
-    let file_name=req.params.file_name;
-    console.log("cdddl",userId,file_name);
-    client.query("select a.author_name,u.date_uploade,u.hardcover,u.condition,u.add_details,b.book_name from books b,uploaded_books u,authors a,books_of_authors boa where u.bid=b.bid and b.picture=$1 and b.bid=boa.bid and boa.aid=a.aid",[file_name],(error,result)=>{
-      res.json(result.rows[0]);
-    })
- });
+	let userId = req.params.Id;
+	let file_name = req.params.file_name;
+	console.log("cdddl", userId, file_name);
+	client.query("select a.author_name,u.date_uploade,u.hardcover,u.condition,u.add_details,b.book_name from books b,uploaded_books u,authors a,books_of_authors boa where u.bid=b.bid and b.picture=$1 and b.bid=boa.bid and boa.aid=a.aid", [file_name], (error, result) => {
+		res.json(result.rows[0]);
+	})
+});
 
 app.get("/booksreading/data/:Id/:file_name", function (req, res) {
-    let userId = req.params.Id;
-    // let id=path.parse(userId).name; // index
-    console.log("sssss",userId);
-    client.query("select book_name,add_details,author_name,name,date_shared from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join(select * from shared_books full join users on users.id=shared_books.owner where shared_books.target_user=$1) as t0)as t1)as t2)as t3",[userId],(error,result)=>{
-      console.log(result.rows[0]);
-        res.json(result.rows[0]);
-    })
- });
+	let userId = req.params.Id;
+	// let id=path.parse(userId).name; // index
+	console.log("sssss", userId);
+	client.query("select book_name,add_details,author_name,name,date_shared from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join(select * from shared_books full join users on users.id=shared_books.owner where shared_books.target_user=$1) as t0)as t1)as t2)as t3", [userId], (error, result) => {
+		console.log(result.rows[0]);
+		res.json(result.rows[0]);
+	})
+});
 
- app.get("/reviewed/data/:Id/:file_name", function (req, res) {
-    let userId = req.params.Id;
-    let bid=req.params.file_name;
-    bid=bid.split('.')[0];
-    console.log("sssss",userId,bid);
-    client.query("select author_name,book_name,synopsis,review,date from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from reviews where bid=$1 and id=$2)as t1)as t2)as t3",[bid,userId],(error,result)=>{
-      console.log(result.rows[0]);
-        res.json(result.rows[0]);
-    })
- });
+app.get("/reviewed/data/:Id/:file_name", function (req, res) {
+	let userId = req.params.Id;
+	let bid = req.params.file_name;
+	bid = bid.split('.')[0];
+	console.log("sssss", userId, bid);
+	client.query("select author_name,book_name,synopsis,review,date from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from reviews where bid=$1 and id=$2)as t1)as t2)as t3", [bid, userId], (error, result) => {
+		console.log(result.rows[0]);
+		res.json(result.rows[0]);
+	})
+});
 
- app.get("/booksgiven/data/:Id/:file_name", function (req, res) {
-    let userId = req.params.Id;
-    let bid=req.params.file_name;
-    bid=bid.split('.')[0];
-    console.log("ssssstttt",userId,bid);
-    client.query("select name,book_name,author_name,add_details,condition,hardcover,date_shared from users natural join (select target_user as id,author_name,book_name,date_shared,condition,hardcover,add_details from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join (select * from shared_books where bid=$1 and owner=$2)as t0) as t2)as t3)as t4)as t5",[bid,userId],(error,result)=>{
-      console.log(result.rows[0]);
-        res.json(result.rows[0]);
-    })
- });
+app.get("/booksgiven/data/:Id/:file_name", function (req, res) {
+	let userId = req.params.Id;
+	let bid = req.params.file_name;
+	bid = bid.split('.')[0];
+	console.log("ssssstttt", userId, bid);
+	client.query("select name,book_name,author_name,add_details,condition,hardcover,date_shared from users natural join (select target_user as id,author_name,book_name,date_shared,condition,hardcover,add_details from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join (select * from shared_books where bid=$1 and owner=$2)as t0) as t2)as t3)as t4)as t5", [bid, userId], (error, result) => {
+		console.log(result.rows[0]);
+		res.json(result.rows[0]);
+	})
+});
 //  app.get("/booksreading/data/:Id", function (req, res) {
 //      let userId = req.params.Id.slice(1);
 //     client.query("select picture from books where bid in (select bid from shared_books where target_user=$1)",[userId],(error,result)=>{
 //      res.json(result.rows);
 //    })
- 
+
 //  });
- 
+
 //  app.get("/reviews/data/:Id", function (req, res) {
 //      let userId = req.params.Id.slice(1);
 //     client.query("select picture from books where bid in(select bid from reviews where owner=$1 )",[userId],(error,result)=>{
 //      res.json(result.rows);
 //    })
 //  });
- 
+
 //  app.get("/booksgiven/data/:Id", function (req, res) {
 //      let userId = req.params.Id.slice(1);
 //     client.query("select picture from books where bid in(select bid from shared_books where owner=$1)",[userId],(error,result)=>{

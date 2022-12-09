@@ -21,6 +21,7 @@ function Accept(props) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("DATA:",data)
         const user = {
           owner: data.id,
           title:props.title,
@@ -33,11 +34,12 @@ function Accept(props) {
           "content-type": "application/json",
           Accept: "application/json",
         }),
+        credentials: "include",
         mode: "cors",
         body: JSON.stringify(user),
         credentials: "include",
       })
-        .then((response) => response.json())
+        .then((response) => console.log(user))
       });
   }
   return (

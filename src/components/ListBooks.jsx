@@ -42,7 +42,7 @@ function ListBooks(props) {
   const [display, set] = useState(false);
   const [cond, setcond] = useState(false); //to display condition or not
   const [owner, setowner] = useState(false); //to display owner/user will be shown
-  const [btn, setbtn] = useState(true);
+  const [btn, setbtn] = useState(false);
   const [rev, setrev] = useState(false);
   const [obj, setobj] = useState({
     image: "",
@@ -221,7 +221,7 @@ function ListBooks(props) {
                 });
                 setcond(false);
                 setowner(false);
-                setbtn(true);
+                setbtn(false);
                 setrev(true);
                 set(true);
               });
@@ -276,7 +276,7 @@ function ListBooks(props) {
                 });
                 setcond(false);
                 setowner(false);
-                setbtn(true);
+                setbtn(false);
                 setrev(true);
                 set(true);
               });
@@ -293,6 +293,7 @@ function ListBooks(props) {
         {books_arr.map((vl2, vl3) => {
           return (
             <BookCover
+              key = {vl2.picture}
               src={"http://localhost:4000/" + vl2.picture}
               className={"small details"}
               onpress={click}

@@ -31,11 +31,11 @@ function SharingRequest(props) {
             credentials: "include",
           }
         )
-          .then((response) => response.json())
-          .then((datum) => {
-            console.log(datum);
+          .then((response) => response.json().then((datum) => {
             setreq(datum);
-          });
+            console.log("datum",datum);
+          }))
+          ;
       });
   },[]);
   return (
