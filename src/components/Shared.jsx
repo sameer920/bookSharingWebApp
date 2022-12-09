@@ -10,7 +10,7 @@ function Shared(props) {
         <h2 className="headers">Books Taken For Reading</h2>
         <ListBooks value={true} value1={false} image={"book1.jpg"} id={"booksreading"}/>
         <h2 className="headers">Books Reviews By You</h2>
-        <ListBooks value={false} value1={true} image={"testCover.jpg"} id={"reviews"}/>
+        <ListBooks value={false} value1={true} image={"testCover.jpg"} id={"reviewed"}/>
         </>
       );
 }

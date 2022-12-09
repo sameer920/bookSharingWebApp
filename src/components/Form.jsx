@@ -9,13 +9,12 @@ import { RiCloseCircleFill } from "react-icons/ri";
 import axios from "axios";
 import BookCover from "./BookCover.jsx";
 import { useEffect } from "react";
+import {useLocation} from "react-router-dom"
+
 
 function f(event) {
   var image = document.getElementById("image");
   console.log(image.files[0]);
-  // image=URL.createObjectURL(image.src);
-  // image.src = URL.createObjectURL(event.target.files[0]);
-  // image.src = URL.createObjectURL(event.target.files[0]);
   var disp = document.getElementById("book_upload");
   disp.src = URL.createObjectURL(image.files[0]);
   console.log(image, event, disp);
@@ -24,9 +23,10 @@ function Form(props) {
   const [review, setreview] = useState({});
   const [book, setbook] = useState({});
   const [img,setimg]=useState(null);
+  const pth=useLocation().pathname ;
   useEffect(
     function () {
-      fetch("http://localhost:4000/AddBooks", {
+      fetch("http://localhost:4000"+ pth, {
         method: "POST",
         headers: new Headers({
           "content-type": "application/json",
@@ -47,6 +47,7 @@ function Form(props) {
       });
           }
           console.log(data);
+          props.close();
         });
     },
     [book]
@@ -54,13 +55,7 @@ function Form(props) {
   function sub_form(e) {
     e.preventDefault();
     const hard = e.target.hardcover.checked?true:false;
-    
     setimg(e.target.image.files[0]);
-
-    // await axios.post("http://localhost:4000/upload", data).then((res) => {
-    //   // this.setState({ photos: [res.data, ...this.state.photos] });
-    //   console.log(res);
-    // });
     let user = {
       id: 2,
     };
@@ -89,10 +84,36 @@ function Form(props) {
         });
       });
   }
+  function sub_rev(e){
+    e.preventDefault();
+    setimg(e.target.image.files[0]);
+    fetch("http://localhost:4000/getUserInfo", {
+      method: "GET",
+      mode: "cors",
+      headers: new Headers({
+        "content-type": "application/json",
+        Accept: "application/json",
+      }),
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const user=data;
+        setbook({
+          id: user.id,
+          title: e.target.title.value,
+          author: e.target.author.value,
+          rating: e.target.rating.value,
+          synopsis: e.target.synopsis.value,
+          review: e.target.review.value,
+        });
+      });
+
+  }
   return (
     <div className="salmon1">
       <div className="box">
-        <form action="" method="post" className="Form" onSubmit={sub_form}>
+        <form action="" method="post" className="Form" onSubmit={props.condition?sub_form:sub_rev}>
           <div className="p-1">
             <div className="item1">
               <RiCloseCircleFill

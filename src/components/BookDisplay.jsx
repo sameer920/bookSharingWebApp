@@ -46,11 +46,7 @@ function BookDisplay(props) {
           </h2>
           {props.review ? (
             <h2 style={{ marginRight: "2vh", overflowY: "auto" }} className="h2_description">
-              Description : Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Molestias eum fugit necessitatibus saepe, eveniet quidem
-              exercitationem rem totam perspiciatis? Recusandae molestias
-              nesciunt fugit reiciendis accusantium qui eligendi velit vitae
-              numquam?{props.obj.text}
+              Review : {props.obj.text}
             </h2>
           ) : (
             <></>
