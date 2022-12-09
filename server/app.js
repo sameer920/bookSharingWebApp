@@ -666,15 +666,7 @@ app.post("/update_req", function (req, res) {
 			}
 	})
 });
-// app.get("/requests/:id",(req,res)=>{
-// 	console.log(req.params.id)
-// 	client.query(`select * from requests r, books b where r.owner=$1 and r.bid=b.bid`, [req.params.id], (err, result) => {
-// 		if (err) console.log("error in requests", err);
-// 		else {
-// 			res.json(result.rows);
-// 		}
-// 	})
-// })
+
 app.get("/Details/:bookId", function (req, res) {
 	let bookId = req.params.bookId;
 	client.query(`Select hardcover, add_details, condition, availability from uploaded_books where bid=$1`, [bookId], (err, result) => {
