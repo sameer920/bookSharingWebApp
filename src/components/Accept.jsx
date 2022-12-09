@@ -7,6 +7,39 @@ import BookCover from "./BookCover.jsx";
 import { Button } from "@mui/material";
 
 function Accept(props) {
+  function update_state(event) {
+    event.preventDefault();
+    console.log(event.target.id);
+    fetch("http://localhost:4000/getUserInfo", {
+      method: "GET",
+      mode: "cors",
+      headers: new Headers({
+        "content-type": "application/json",
+        Accept: "application/json",
+      }),
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const user = {
+          owner: data.id,
+          title:props.title,
+          state:event.target.id,
+          id:props.id
+        };
+        fetch("http://localhost:4000/update_req", {
+        method: "POST",
+        headers: new Headers({
+          "content-type": "application/json",
+          Accept: "application/json",
+        }),
+        mode: "cors",
+        body: JSON.stringify(user),
+        credentials: "include",
+      })
+        .then((response) => response.json())
+      });
+  }
   return (
     <div className="main-div">
       <BookCover src={props.img} className="small img_accept" />
@@ -15,8 +48,12 @@ function Accept(props) {
         <h3>Requested by: {props.user}</h3>
         <h3>Date: {props.date}</h3>
         <div className="buttons">
-          <button>ACCEPT</button>
-          <button>REJECT</button>
+          <button onClick={update_state} id="true">
+            ACCEPT
+          </button>
+          <button onClick={update_state} id="false">
+            REJECT
+          </button>
         </div>
       </div>
     </div>
