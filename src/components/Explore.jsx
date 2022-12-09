@@ -8,11 +8,13 @@ import SearchBar from "./SearchBar";
 import { useEffect } from "react";
 import { useState } from "react";
 import ExploreListComponent from "./ExploreListComponent";
+import { createSearchParams, Link ,useNavigate } from "react-router-dom";
 
 let path = "http://localhost:4000";
 
 function Explore(props){
     let x;
+    let navigate = useNavigate();
     const [popular, setPopular] = useState([{a:""}]);
     const [recommended, setRecommended] = useState([{a:""}]);
     useEffect(()=>{
@@ -28,8 +30,10 @@ function Explore(props){
         if (typeof(id) != "string"){
             id =id.toString()
         }
-        window.location.href = "/Book/" + id;
+        navigate("/Book/"+id,);
+        // window.location.href = "/Book/" + id;
     }
+
     return <div className="explore">
 
         <SearchBar />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { redirect } from "./helperFunctions";
 import "./styles/loginAndRegister.css";
 
 function Register() {
@@ -84,9 +85,7 @@ function Register() {
         })
             .then((response) => {
                 // console.log(response)
-                if (response.redirected === true) {
-                    window.location.href = response.url.substring(response.url.lastIndexOf("/"));
-                }
+                redirect(response, window);
             })
             .then((data) => console.log(data))
             .catch(err => console.log(err))
