@@ -63,7 +63,8 @@ app.post("/upload", (req, res) => {
     });
 });
 
-app.use(express.static("./public2"));
+app.use(express.static("./public2/images"));
+app.use(express.static(__dirname + './public2/images'));
 
 client.connect((err) => {
     if (err) {
@@ -572,36 +573,71 @@ app.get("/bookssharing/:Id", function (req, res) {
 });
 
 app.get("/booksreading/:Id", function (req, res) {
+    console.log("hit");
     let userId = req.params.Id.slice(1);
+    console.log("44343",userId);
    client.query("select picture from books where bid in (select bid from shared_books where target_user=$1)",[userId],(error,result)=>{
     res.json(result.rows);
   })
 
 });
 
-app.get("/reviews/:Id", function (req, res) {
+app.get("/reviewed/:Id", function (req, res) {
+    console.log("hitted");
     let userId = req.params.Id.slice(1);
-   client.query("select picture from books where bid in(select bid from reviews where owner=$1 )",[userId],(error,result)=>{
+    console.log("ee",userId);
+   client.query("select picture from books where bid in(select bid from reviews where id=$1 )",[userId],(error,result)=>{
     res.json(result.rows);
   })
 });
 
 app.get("/booksgiven/:Id", function (req, res) {
     let userId = req.params.Id.slice(1);
+    console.log("ttt",userId);
    client.query("select picture from books where bid in(select bid from shared_books where owner=$1)",[userId],(error,result)=>{
     res.json(result.rows);
   })
 });
+app.get("/bookssharing/data/:Id/:file_name", function (req, res) {
+    let userId = req.params.Id;
+    let file_name=req.params.file_name;
+    console.log("cdddl",userId,file_name);
+    client.query("select a.author_name,u.date_uploade,u.hardcover,u.condition,u.add_details,b.book_name from books b,uploaded_books u,authors a,books_of_authors boa where u.bid=b.bid and b.picture=$1 and b.bid=boa.bid and boa.aid=a.aid",[file_name],(error,result)=>{
+      res.json(result.rows[0]);
+    })
+ });
 
-// app.get("/bookssharing/data/:Id", function (req, res) {
-//     let userId = req.params.Id.slice(1);
-//     let id=path.parse(userId).name; // index
-//     console.log(id);
-//     // client.query("select picture from books where bid in(select bid from uploaded_books where owner=$1 and availability=true)",[userId],(error,result)=>{
-//     //   res.json(result.rows);
-//     // })
-//  });
- 
+app.get("/booksreading/data/:Id/:file_name", function (req, res) {
+    let userId = req.params.Id;
+    // let id=path.parse(userId).name; // index
+    console.log("sssss",userId);
+    client.query("select book_name,add_details,author_name,name,date_shared from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join(select * from shared_books full join users on users.id=shared_books.owner where shared_books.target_user=$1) as t0)as t1)as t2)as t3",[userId],(error,result)=>{
+      console.log(result.rows[0]);
+        res.json(result.rows[0]);
+    })
+ });
+
+ app.get("/reviewed/data/:Id/:file_name", function (req, res) {
+    let userId = req.params.Id;
+    let bid=req.params.file_name;
+    bid=bid.split('.')[0];
+    console.log("sssss",userId,bid);
+    client.query("select author_name,book_name,synopsis,review,date from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from reviews where bid=$1 and id=$2)as t1)as t2)as t3",[bid,userId],(error,result)=>{
+      console.log(result.rows[0]);
+        res.json(result.rows[0]);
+    })
+ });
+
+ app.get("/booksgiven/data/:Id/:file_name", function (req, res) {
+    let userId = req.params.Id;
+    let bid=req.params.file_name;
+    bid=bid.split('.')[0];
+    console.log("ssssstttt",userId,bid);
+    client.query("select name,book_name,author_name,add_details,condition,hardcover,date_shared from users natural join (select target_user as id,author_name,book_name,date_shared,condition,hardcover,add_details from authors natural join (select * from books_of_authors natural join (select * from books natural join (select * from uploaded_books natural join (select * from shared_books where bid=$1 and owner=$2)as t0) as t2)as t3)as t4)as t5",[bid,userId],(error,result)=>{
+      console.log(result.rows[0]);
+        res.json(result.rows[0]);
+    })
+ });
 //  app.get("/booksreading/data/:Id", function (req, res) {
 //      let userId = req.params.Id.slice(1);
 //     client.query("select picture from books where bid in (select bid from shared_books where target_user=$1)",[userId],(error,result)=>{
@@ -623,3 +659,25 @@ app.get("/booksgiven/:Id", function (req, res) {
 //      res.json(result.rows);
 //    })
 //  });
+app.get("/requests/:Id", function (req, res) {
+    let userId = req.params.Id;
+    // let id=path.parse(userId).name; // index
+    console.log("sssss",userId," kjkjk");
+    client.query("select id,date_req,name,book_name,picture from users natural  join (select target_user as id,book_name,picture,date_req  from requests natural join books where owner=$1 and state is null) as t1",[userId],(error,result)=>{
+      console.log(result.rows);
+        res.json(result.rows);
+    })
+ });
+ app.post("/update_req",function(req,res){
+    console.log(req.body);
+    client.query("update requests set state=$1,owner_seen=true where owner=$2 and target_user=$3 bid=(select bid from books where book_name=$4)",[req.body.state,req.body.owner,req.body.id,req.body.title],(error,result)=>{
+        if(!error)
+        if(req.body.state==true){
+            client.query("update requests set state=false,owner_seen=true  where owner=$1 and bid=(select bid from books where book_name=$2)",[req.body.owner,req.body.title],(errr,ress)=>{})
+            client.query("select bid from books where book_name=$1",[req.boby.title],(errr,ress)=>{
+                client.query(" insert into shared_books values($1,$2,$3,$4)",[ress.rows[0].bid,req.body.owner,req.body.id,'2022-12-09'],(e,r)=>{})
+            })
+           
+        }
+      })
+ });
